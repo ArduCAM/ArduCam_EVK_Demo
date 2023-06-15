@@ -155,7 +155,7 @@ int main(int argc, char **argv) {
 
     ArducamRegisterReadCallback(handle, show_image, nullptr);
     // ArducamRegisterEventCallback(handle, event_process, nullptr);
-    // ArducamRegisterErrorCallback(handle, error_process, nullptr);
+    ArducamRegisterErrorCallback(handle, error_process, nullptr);
     ArducamStartCamera(handle);
 
     {
