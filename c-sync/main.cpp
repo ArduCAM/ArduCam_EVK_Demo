@@ -1,13 +1,22 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "utils.h"
 
 bool exit_flag = false;
+uint32_t mode_id = 1;
+uint32_t mode_size = 0;
 
 void show_image(ArducamCameraHandle handle, ArducamFrameBuffer fb) {
     int key = cv::waitKey(1);
     if (key == 'q') {
         exit_flag = true;
+    } else if (key == 's' && !ArducamBinConfigLoaded(handle)) {
+        mode_id++;
+        if (mode_id > mode_size) {
+            mode_id = 1;
+        }
+        ArducamSwitchMode(handle, mode_id);
     }
 
     show_buffer(fb);
@@ -93,9 +102,21 @@ int main(int argc, char **argv) {
 
     PrintDeviceInfo(handle,  device);
 
-    ArducamCameraConfig config;
-    ArducamGetCameraConfig(handle, &config);
-    printf("width: %d, height: %d\n", config.width, config.height);
+    ArducamCameraConfig *config;
+    uint32_t *ids;
+    if (ArducamBinConfigLoaded(handle)) {
+        config = (ArducamCameraConfig*)malloc(sizeof(ArducamCameraConfig));
+        ArducamGetCameraConfig(handle, config);
+        printf("width: %d, height: %d\n", config->width, config->height);
+    } else {
+        ret = ArducamListMode(handle, &config, &ids, &mode_size);
+        if (ret) {
+            printf("Failed to get schema information\n");
+            return -1;
+        }
+        printf("Mode size: %d\n", mode_size);
+
+    }
 
     ArducamStartCamera(handle);
 

@@ -143,7 +143,7 @@ int main(int argc, char **argv) {
 
     // const Control* control_list;
     // uint32_t controls_length;
-    // ret = ArducamGetCtrl(handle, &control_list, &controls_length);
+    // ret = ArducamListCtrls(handle, &control_list, &controls_length);
     // if (!ret) {
     //     for (uint32_t i = 0; i < controls_length; i++) {
     //         printf("Control Name: %s\n", control_list[i].func);
@@ -157,14 +157,22 @@ int main(int argc, char **argv) {
     // ArducamRegisterEventCallback(handle, event_process, nullptr);
     ArducamRegisterErrorCallback(handle, error_process, nullptr);
     ArducamStartCamera(handle);
-
+    uint32_t mode_id = 1;
     {
         std::unique_lock lk(mtx);
         while (!exit_flag) {
             if (key == 'q') {
                 exit_flag = true;
                 break;
+            } else if (key == 's' && !ArducamBinConfigLoaded(handle)) {
+                mode_id++;
+                if (mode_id > 3) {
+                    mode_id = 1;
+                }
+                ArducamSwitchMode(handle, mode_id);
             }
+
+
             key = 0;
             if (!event_cond.wait_for(lk, 500ms, [] { return key != 0; })) {
                 key = -1;
