@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from ArducamSDK import Frame
+from ArducamEvkSDK import Frame
 
 cvt_code_map = {
     0: cv2.COLOR_BayerRG2BGR, 1: cv2.COLOR_BayerGR2BGR, 2: cv2.COLOR_BayerGB2BGR,

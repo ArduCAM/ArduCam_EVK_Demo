@@ -3,7 +3,7 @@ import threading
 import time
 
 import cv2
-from ArducamSDK import Camera, Param
+from ArducamEvkSDK import Camera, Param
 
 from utils import show_buffer, WaitGroup
 
@@ -27,7 +27,7 @@ def main(config):
 
     camera.set_read_callback(show_image)
     camera.start()
-    print(f"{camera.width=}, {camera.height=}")
+    print(f"camera.width={camera.config.width}, camera.height={camera.config.height}")
     group.wait()
     camera.stop()
     camera.close()
@@ -41,6 +41,6 @@ if __name__ == "__main__":
         type=str,
     )
 
-    args = parse.parse_args(["-c", "/home/user/workspace/AruducamUsbCamera/cameracfg/IMX219_MIPI_2Lane_RAW8_640x480.cfg"])
+    args = parse.parse_args()
 
     main(args.config)

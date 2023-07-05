@@ -28,17 +28,17 @@ if(NOT DEFINED OpenCV_FOUND)
   message(STATUS "OpenCV version: ${OpenCV_VERSION}")
 endif()
 
-if(NOT DEFINED arducam_usb_sdk_FOUND)
-  find_package(arducam_usb_sdk)
-  message(STATUS "arducam_usb_sdk version: ${arducam_usb_sdk_VERSION}")
+if(NOT DEFINED arducam_evk_sdk_FOUND)
+  find_package(arducam_evk_sdk)
+  message(STATUS "arducam_evk_sdk version: ${arducam_evk_sdk_VERSION}")
 endif()
 
 include_directories(
-    ${arducam_usb_sdk_INCLUDE_DIR}
+    ${arducam_evk_sdk_INCLUDE_DIR}
     ${OpenCV_INCLUDE_DIRS}
 )
 link_directories(
-    ${arducam_usb_sdk_LIB_DIR}
+    ${arducam_evk_sdk_LIB_DIR}
 )
 
 set(CORE_LIBS)
@@ -61,7 +61,7 @@ add_executable(${APP_NAME}
 
 target_link_libraries(
   ${APP_NAME}
-  ${arducam_usb_sdk_LIBS}
+  ${arducam_evk_sdk_LIBS}
   ${CORE_LIBS}
 )
 
