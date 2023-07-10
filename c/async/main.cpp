@@ -16,6 +16,7 @@ void show_image(ArducamFrameBuffer fb, void *user_data) {
         event_cond.notify_one();
     }
 
+    printf("image[%d] with resolution: %d x %d\n", fb.seq, fb.format.width, fb.format.height);
     // display frame with opencv
     show_buffer(fb);
 }
@@ -34,7 +35,7 @@ void event_process(ArducamEventCode event, void *user_data) {
     }
 }
 
-void error_process(const char *error, void *user_data) {
+void error_process(ArducamLoggerLevel type, const char *error, void *user_data) {
     printf("[Error] %s\n", error);
 }
 
@@ -155,7 +156,7 @@ int main(int argc, char **argv) {
 
     ArducamRegisterReadCallback(handle, show_image, nullptr);
     // ArducamRegisterEventCallback(handle, event_process, nullptr);
-    ArducamRegisterErrorCallback(handle, error_process, nullptr);
+    ArducamRegisterMessageCallback(handle, error_process, nullptr);
     ArducamStartCamera(handle);
     uint32_t mode_id = 1;
     {

@@ -23,10 +23,9 @@ void PrintDeviceInfo(Arducam::Camera camera, ArducamDeviceHandle device) {
     printf("device in used: %d\n", device->in_used);
 
     const uint8_t *serial_number = device->serial_number;
-    printf("device serial number: %c%c%c%c-%c%c%c%c-%c%c%c%c\n",
-			serial_number[0], serial_number[1], serial_number[2], serial_number[3],
-			serial_number[4], serial_number[5], serial_number[6], serial_number[7],
-			serial_number[8], serial_number[9], serial_number[10], serial_number[11]);
+    printf("device serial number: %c%c%c%c-%c%c%c%c-%c%c%c%c\n", serial_number[0], serial_number[1], serial_number[2],
+           serial_number[3], serial_number[4], serial_number[5], serial_number[6], serial_number[7], serial_number[8],
+           serial_number[9], serial_number[10], serial_number[11]);
 
     printf("device usb type: %s\n", camera.usbType().data());
     printf("device speed: %d\n", device->speed);
@@ -34,12 +33,12 @@ void PrintDeviceInfo(Arducam::Camera camera, ArducamDeviceHandle device) {
 
 #define USB_CPLD_I2C_ADDRESS 0x46
 void dumpDeviceInfo(Arducam::Camera camera) {
-	uint32_t version = 0, year = 0, mouth = 0, day = 0;
+    uint32_t version = 0, year = 0, mouth = 0, day = 0;
     version = *(camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x00));
     year = *(camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x05));
     mouth = *(camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x06));
     day = *(camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x07));
-	printf("CPLD version: v%d.%d date: 20%d-%02d-%02d\n", version >> 4, version & 0x0F, year, mouth, day);
+    printf("CPLD version: v%d.%d date: 20%d-%02d-%02d\n", version >> 4, version & 0x0F, year, mouth, day);
     Arducam::Camera::BoardConfig boardConfig = *(camera.readBoardConfig(0x80, 0x00, 0x00, 2));
     printf("fw_version: v%d.%d \n", boardConfig[0] & 0xFF, boardConfig[1] & 0xFF);
 }
@@ -93,8 +92,7 @@ int main(int argc, char **argv) {
 
     while (!exit_flag) {
         ArducamFrameBuffer fb;
-        camera.read(fb, 1000);
-        if (fb.data == nullptr) {
+        if (!camera.read(fb, 1000) || fb.data == nullptr) {
             printf("Error reading frame.\n");
             continue;
         }

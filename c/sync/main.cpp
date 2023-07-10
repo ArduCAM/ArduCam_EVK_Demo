@@ -19,6 +19,8 @@ void show_image(ArducamCameraHandle handle, ArducamFrameBuffer fb) {
         ArducamSwitchMode(handle, mode_id);
     }
 
+    printf("image[%d] with resolution: %d x %d\n", fb.seq, fb.format.width, fb.format.height);
+
     show_buffer(fb);
 }
 
@@ -28,10 +30,9 @@ void PrintDeviceInfo(ArducamCameraHandle handle, ArducamDeviceHandle device) {
     printf("device in used: %d\n", device->in_used);
 
     const uint8_t *serial_number = device->serial_number;
-    printf("device serial number: %c%c%c%c-%c%c%c%c-%c%c%c%c\n",
-			serial_number[0], serial_number[1], serial_number[2], serial_number[3],
-			serial_number[4], serial_number[5], serial_number[6], serial_number[7],
-			serial_number[8], serial_number[9], serial_number[10], serial_number[11]);
+    printf("device serial number: %c%c%c%c-%c%c%c%c-%c%c%c%c\n", serial_number[0], serial_number[1], serial_number[2],
+           serial_number[3], serial_number[4], serial_number[5], serial_number[6], serial_number[7], serial_number[8],
+           serial_number[9], serial_number[10], serial_number[11]);
 
     printf("device usb type: %s\n", ArducamGetUSBType(handle));
     printf("device speed: %d\n", device->speed);
@@ -67,7 +68,7 @@ int main(int argc, char **argv) {
     if (ret) {
         printf("Failed to get device list\n");
         return -1;
-    }  
+    }
 
     const uint32_t device_list_size = device_list->size;
     printf("device list size: %d\n", device_list_size);
@@ -79,11 +80,7 @@ int main(int argc, char **argv) {
     ArducamDeviceHandle device = device_list->devices[deviceID];
     ArducamCameraHandle handle;
     ArducamCameraOpenParam param = {
-        .config_file_name = config_file_name,
-        .bin_config = bin_config,
-        .mem_type = DMA,
-        .device = device
-    };
+        .config_file_name = config_file_name, .bin_config = bin_config, .mem_type = DMA, .device = device};
 
     // ArducamDefaultParam(&param);
 
@@ -100,12 +97,12 @@ int main(int argc, char **argv) {
         return -1;
     }
 
-    PrintDeviceInfo(handle,  device);
+    PrintDeviceInfo(handle, device);
 
     ArducamCameraConfig *config;
     uint32_t *ids;
     if (ArducamBinConfigLoaded(handle)) {
-        config = (ArducamCameraConfig*)malloc(sizeof(ArducamCameraConfig));
+        config = (ArducamCameraConfig *)malloc(sizeof(ArducamCameraConfig));
         ArducamGetCameraConfig(handle, config);
         printf("width: %d, height: %d\n", config->width, config->height);
     } else {
@@ -115,7 +112,6 @@ int main(int argc, char **argv) {
             return -1;
         }
         printf("Mode size: %d\n", mode_size);
-
     }
 
     ArducamStartCamera(handle);
