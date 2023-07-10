@@ -1,5 +1,7 @@
 # Introduction
 
+This is the new SDK for Arducam EVK, currently in beta version and only supports Linux.
+
 ## Installation dependence
 
 1. opencv
