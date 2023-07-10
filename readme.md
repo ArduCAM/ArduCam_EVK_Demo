@@ -19,7 +19,7 @@ sudo apt install arducam-config-parser-dev arducam-evk-sdk-beta
 
 [Download script](https://github.com/ArduCAM/ArduCAM_USB_Camera_Shield/releases/download/install_drivers/configure_udev_rules.sh)
 
-![udev](resources/images/driver/udev.png)
+![udev](img/udev.png)
 
 execute script
 
