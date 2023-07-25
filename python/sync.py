@@ -3,28 +3,30 @@ import argparse
 import cv2
 from ArducamEvkSDK import Camera, Param, LOG_OFF, LOG_INFO
 
-from utils import show_buffer
+from utils import show_image
 
 
 def main(config):
+    camera = Camera()
     param = Param()
     param.config_file_name = config
     param.bin_config = config.endswith(".bin")
-    camera = Camera()
-    r = camera.open(param)
+    camera.open(param)
+    camera.set_message_callback(lambda l, msg: print(msg))
     camera.log_level = LOG_INFO
     print(camera.usb_type)
-    if r != 0:
-        raise Exception(f"open camera error! ret={r}")
+    # if r != 0:
+    #     raise Exception(f"open camera error! ret={r}")
     camera.init()
     camera.start()
-    print(f"{camera.width=}, {camera.height=}")
+    config = camera.config
+    print(f"{config.width=}, {config.height=}")
     while True:
-        fb = camera.read(1000)
-        if fb is None:
+        image = camera.read(1000)
+        if image is None:
             continue
-        show_buffer(fb)
-        # print(f"get frame({fb.format.width}x{fb.format.height}) from camera.")
+        show_image(image)
+        # print(f"get frame({image.format.width}x{image.format.height}) from camera.")
         key = cv2.waitKey(1)
         if key == ord('q'):
             break

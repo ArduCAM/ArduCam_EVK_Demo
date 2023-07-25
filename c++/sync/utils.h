@@ -4,5 +4,5 @@
 
 #include "arducam/ArducamCamera.hpp"
 
-cv::Mat from_buffer(ArducamFrameBuffer fb);
-void show_buffer(ArducamFrameBuffer fb);
+cv::Mat from_image(ArducamImageFrame image);
+void show_image(ArducamImageFrame image);

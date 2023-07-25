@@ -7,23 +7,23 @@ const std::map<int, int> cvt_code_map{
     {3, cv::COLOR_BayerBG2BGR}, {4, cv::COLOR_GRAY2BGR},
 };
 
-cv::Mat from_buffer(ArducamFrameBuffer fb) {
+cv::Mat from_image(ArducamImageFrame image) {
     cv::Mat frame;
-    uint32_t resolution = fb.format.width * fb.format.height;
+    uint32_t resolution = image.format.width * image.format.height;
 
-    if (fb.format.bit_width == 8) {
-        frame = cv::Mat(fb.format.height, fb.format.width, CV_8UC1, fb.data);
+    if (image.format.bit_width == 8) {
+        frame = cv::Mat(image.format.height, image.format.width, CV_8UC1, image.data);
     } else {
-        uint16_t *data = reinterpret_cast<uint16_t *>(fb.data);
-        const int l_shift = 16 - fb.format.bit_width;
+        uint16_t *data = reinterpret_cast<uint16_t *>(image.data);
+        const int l_shift = 16 - image.format.bit_width;
         for (uint32_t i = 0; i < resolution; i++) {
             data[i] <<= l_shift;
         }
-        frame = cv::Mat(fb.format.height, fb.format.width, CV_16UC1, fb.data);
+        frame = cv::Mat(image.format.height, image.format.width, CV_16UC1, image.data);
     }
 
     cv::Mat color_frame;
-    cv::cvtColor(frame, color_frame, cvt_code_map.at(fb.format.format & 0xff));
+    cv::cvtColor(frame, color_frame, cvt_code_map.at(image.format.format & 0xff));
 
     // if color_frame width > 720, resize it to 720
     if (color_frame.cols > 720) {
@@ -35,7 +35,7 @@ cv::Mat from_buffer(ArducamFrameBuffer fb) {
     return color_frame;
 }
 
-void show_buffer(ArducamFrameBuffer fb) {
-    cv::imshow("Test", from_buffer(fb));
-    cv::setWindowTitle("Test", "Test " + std::to_string(fb.seq));
+void show_image(ArducamImageFrame image) {
+    cv::imshow("Test", from_image(image));
+    cv::setWindowTitle("Test", "Test " + std::to_string(image.seq));
 }

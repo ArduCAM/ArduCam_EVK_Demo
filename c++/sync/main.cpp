@@ -8,13 +8,13 @@
 
 bool exit_flag = false;
 
-void show_image(Arducam::Camera &camera, ArducamFrameBuffer fb) {
+void show_image(Arducam::Camera &camera, ArducamImageFrame image) {
     int key = cv::waitKey(1);
     if (key == 'q') {
         exit_flag = true;
     }
 
-    show_buffer(fb);
+    show_image(image);
 }
 
 void PrintDeviceInfo(Arducam::Camera camera, ArducamDeviceHandle device) {
@@ -34,12 +34,12 @@ void PrintDeviceInfo(Arducam::Camera camera, ArducamDeviceHandle device) {
 #define USB_CPLD_I2C_ADDRESS 0x46
 void dumpDeviceInfo(Arducam::Camera camera) {
     uint32_t version = 0, year = 0, mouth = 0, day = 0;
-    version = *(camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x00));
-    year = *(camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x05));
-    mouth = *(camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x06));
-    day = *(camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x07));
+    version = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x00);
+    year = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x05);
+    mouth = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x06);
+    day = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x07);
     printf("CPLD version: v%d.%d date: 20%d-%02d-%02d\n", version >> 4, version & 0x0F, year, mouth, day);
-    Arducam::Camera::BoardConfig boardConfig = *(camera.readBoardConfig(0x80, 0x00, 0x00, 2));
+    Arducam::Camera::BoardConfig boardConfig = camera.readBoardConfig(0x80, 0x00, 0x00, 2);
     printf("fw_version: v%d.%d \n", boardConfig[0] & 0xFF, boardConfig[1] & 0xFF);
 }
 
@@ -91,13 +91,13 @@ int main(int argc, char **argv) {
     camera.start();
 
     while (!exit_flag) {
-        ArducamFrameBuffer fb;
-        if (!camera.read(fb, 1000) || fb.data == nullptr) {
+        ArducamImageFrame image;
+        if (!camera.capture(image, 1000) || image.data == nullptr) {
             printf("Error reading frame.\n");
             continue;
         }
-        show_image(camera, fb);
-        camera.returnBuffer(std::move(fb));
+        show_image(camera, image);
+        camera.freeImage(std::move(image));
     }
 
     camera.close();

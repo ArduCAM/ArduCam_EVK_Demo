@@ -9,16 +9,16 @@ int key = 0;
 std::mutex mtx;
 std::condition_variable event_cond;
 
-void show_image(ArducamFrameBuffer fb, void *user_data) {
+void show_image(ArducamImageFrame image, void *user_data) {
     int key = cv::waitKey(1);
     if (key != -1) {
         ::key = key;
         event_cond.notify_one();
     }
 
-    printf("image[%d] with resolution: %d x %d\n", fb.seq, fb.format.width, fb.format.height);
+    printf("image[%d] with resolution: %d x %d\n", image.seq, image.format.width, image.format.height);
     // display frame with opencv
-    show_buffer(fb);
+    show_image(image);
 }
 
 void event_process(ArducamEventCode event, void *user_data) {

@@ -7,7 +7,7 @@ bool exit_flag = false;
 uint32_t mode_id = 1;
 uint32_t mode_size = 0;
 
-void show_image(ArducamCameraHandle handle, ArducamFrameBuffer fb) {
+void show_image(ArducamCameraHandle handle, ArducamImageFrame image) {
     int key = cv::waitKey(1);
     if (key == 'q') {
         exit_flag = true;
@@ -19,9 +19,9 @@ void show_image(ArducamCameraHandle handle, ArducamFrameBuffer fb) {
         ArducamSwitchMode(handle, mode_id);
     }
 
-    printf("image[%d] with resolution: %d x %d\n", fb.seq, fb.format.width, fb.format.height);
+    printf("image[%d] with resolution: %d x %d\n", image.seq, image.format.width, image.format.height);
 
-    show_buffer(fb);
+    show_image(image);
 }
 
 void PrintDeviceInfo(ArducamCameraHandle handle, ArducamDeviceHandle device) {
@@ -117,14 +117,14 @@ int main(int argc, char **argv) {
     ArducamStartCamera(handle);
 
     while (!exit_flag) {
-        ArducamFrameBuffer fb;
-        ArducamReadFrame(handle, &fb, 1000);
-        if (fb.data == nullptr) {
+        ArducamImageFrame image;
+        ArducamCaptureImage(handle, &image, 1000);
+        if (image.data == nullptr) {
             printf("Error reading frame.\n");
             continue;
         }
-        show_image(handle, fb);
-        ArducamReturnBuffer(handle, fb);
+        show_image(handle, image);
+        ArducamFreeImage(handle, image);
     }
 
     ArducamCloseCamera(handle);

@@ -10,16 +10,16 @@ cvt_code_map = {
 }
 
 
-def from_buffer(fb: Frame):
-    if fb.format.bit_depth == 8:
-        frame = fb.data
+def from_image(image: Frame):
+    if image.format.bit_depth == 8:
+        frame = image.data
     else:
-        frame = fb.data
+        frame = image.data
         frame.dtype = np.uint16
-        l_shift = 16 - fb.format.bit_depth
+        l_shift = 16 - image.format.bit_depth
         frame <<= l_shift
 
-    color_frame = cv2.cvtColor(frame, cvt_code_map[fb.format.format_code & 0xff])
+    color_frame = cv2.cvtColor(frame, cvt_code_map[image.format.format_code & 0xff])
 
     # if color_frame width > 720, resize it to 720
     if color_frame.shape[1] > 720:
@@ -30,9 +30,9 @@ def from_buffer(fb: Frame):
     return color_frame
 
 
-def show_buffer(fb: Frame):
-    cv2.imshow("Test", from_buffer(fb))
-    cv2.setWindowTitle("Test", "Test " + str(fb.seq))
+def show_image(image: Frame):
+    cv2.imshow("Test", from_image(image))
+    cv2.setWindowTitle("Test", "Test " + str(image.seq))
 
 
 class WaitGroup(object):

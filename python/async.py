@@ -5,7 +5,7 @@ import time
 import cv2
 from ArducamEvkSDK import Camera, Param
 
-from utils import show_buffer, WaitGroup
+from utils import show_image, WaitGroup
 
 
 def main(config):
@@ -20,7 +20,7 @@ def main(config):
     group = WaitGroup(1)
 
     def show_image(image):
-        show_buffer(image)
+        show_image(image)
         key = cv2.waitKey(1)
         if key == ord("q"):
             group.done()
