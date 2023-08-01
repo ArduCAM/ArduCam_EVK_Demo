@@ -1,7 +1,8 @@
 import argparse
+from typing import Optional, cast
 
 import cv2
-from ArducamEvkSDK import Camera, Param, LOG_OFF, LOG_INFO
+from ArducamEvkSDK import Camera, Param, LoggerLevel, Frame
 
 from utils import show_image
 
@@ -13,8 +14,9 @@ def main(config):
     param.bin_config = config.endswith(".bin")
     camera.open(param)
     camera.set_message_callback(lambda l, msg: print(msg))
-    camera.log_level = LOG_INFO
+    camera.log_level = LoggerLevel.Info
     print(camera.usb_type)
+
     # if r != 0:
     #     raise Exception(f"open camera error! ret={r}")
     camera.init()
@@ -22,7 +24,7 @@ def main(config):
     config = camera.config
     print(f"{config.width=}, {config.height=}")
     while True:
-        image = camera.read(1000)
+        image: Optional[Frame] = cast(Optional[Frame], camera.capture(1000))
         if image is None:
             continue
         show_image(image)
@@ -35,7 +37,7 @@ def main(config):
 
 
 if __name__ == "__main__":
-    parse = argparse.ArgumentParser(description="Arducam SDK example.")
+    parse = argparse.ArgumentParser(description="Arducam Evk SDK example.")
     parse.add_argument(
         "-c", "--config",
         help="Path to config file.",

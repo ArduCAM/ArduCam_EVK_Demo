@@ -16,13 +16,13 @@ pip install -r requirements.txt
 Show help
 
 ```
-python sync.py --help
+python project/sync.py --help
 ```
 
 Run
 
 ```
-python sync.py -c <path/config-file-name>
+python project/sync.py -c <path/config-file-name>
 ```
 
 ### Run async mode
@@ -30,11 +30,11 @@ python sync.py -c <path/config-file-name>
 Show help
 
 ```
-python async.py --help
+python project/async.py --help
 ```
 
 Run
 
 ```
-python async.py -c <path/config-file-name>
+python project/async.py -c <path/config-file-name>
 ```

@@ -99,19 +99,20 @@ int main(int argc, char **argv) {
 
     PrintDeviceInfo(handle, device);
 
-    ArducamCameraConfig *config;
-    uint32_t *ids;
     if (ArducamBinConfigLoaded(handle)) {
-        config = (ArducamCameraConfig *)malloc(sizeof(ArducamCameraConfig));
-        ArducamGetCameraConfig(handle, config);
-        printf("width: %d, height: %d\n", config->width, config->height);
+        ArducamCameraConfig config;
+        ArducamGetCameraConfig(handle, &config);
+        printf("width: %d, height: %d\n", config.width, config.height);
     } else {
-        ret = ArducamListMode(handle, &config, &ids, &mode_size);
+        ArducamCameraConfig *configs;
+        uint32_t *ids;
+        ret = ArducamListMode(handle, &configs, &ids, &mode_size);
         if (ret) {
             printf("Failed to get schema information\n");
             return -1;
         }
         printf("Mode size: %d\n", mode_size);
+        ArducamFreeModeList(handle, configs, ids);
     }
 
     ArducamStartCamera(handle);
