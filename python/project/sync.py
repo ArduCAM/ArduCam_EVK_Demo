@@ -4,7 +4,7 @@ from typing import Optional, cast
 import cv2
 from ArducamEvkSDK import Camera, Param, LoggerLevel, Frame
 
-from utils import show_image
+from project.utils import show_image
 
 
 def main(config):

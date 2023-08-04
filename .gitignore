@@ -5,6 +5,8 @@ build/
 obj-x86_64-linux-gnu/
 __pycache__/
 
+/build.sh
+
 # Prerequisites
 *.d
 

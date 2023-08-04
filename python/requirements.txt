@@ -1,3 +1,6 @@
-opencv-python
-numpy
-ArducamEvkSDK
+opencv-python~=4.1.2.30
+numpy~=1.19.3
+ArducamEvkSDK~=0.0.6b0
+json5~=0.9.11
+pycrc~=0.10.0
+pydantic~=1.10.7

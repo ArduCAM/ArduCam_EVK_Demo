@@ -5,7 +5,7 @@ import time
 import cv2
 from ArducamEvkSDK import Camera, Param, Frame
 
-from utils import show_image, WaitGroup
+from project.utils import show_image, WaitGroup
 
 
 def main(config):
