@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
     }
     ArducamDeviceHandle device = device_list[deviceID];
     Arducam::Camera camera;
-    Arducam::OpenParam param;
+    Arducam::Param param;
     param.config_file_name = config.data();
     param.bin_config = bin_config;
     param.device = device;

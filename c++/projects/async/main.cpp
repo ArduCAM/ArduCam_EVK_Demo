@@ -81,7 +81,7 @@ int main(int argc, char **argv) {
     }
     ArducamDeviceHandle device = device_list[deviceID];
     Arducam::Camera camera;
-    Arducam::OpenParam param;
+    Arducam::Param param;
     param.config_file_name = config.data();
     param.bin_config = bin_config;
     param.device = device;
@@ -100,8 +100,8 @@ int main(int argc, char **argv) {
     printf("width: %d, height: %d\n", camera.width(), camera.height());
 
     camera.enableConsoleLog();
-    // camera.setDebugLevel(info);
-    camera.setReadCallback(std::bind(preview, std::ref(camera), std::placeholders::_1));
+    // camera.setLogLevel(info);
+    camera.setCaptureCallback(std::bind(preview, std::ref(camera), std::placeholders::_1));
     camera.setMessageCallback(std::bind(error_process, std::ref(camera), std::placeholders::_1, std::placeholders::_2));
     camera.start();
 

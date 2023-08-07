@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
     dumpDeviceInfo(handle);
 
     ArducamEnableConsoleLog(handle);
-    ArducamSetDebugLevel(handle, info);
+    ArducamSetLogLevel(handle, info);
 
     ArducamCameraConfig config;
     ArducamGetCameraConfig(handle, &config);
@@ -154,7 +154,7 @@ int main(int argc, char **argv) {
     // ArducamSetCtrl(handle, "setFramerate", 30);
     // ArducamSetCtrl(handle, "setExposureTime", 10000);
 
-    ArducamRegisterReadCallback(handle, show_image, nullptr);
+    ArducamRegisterCaptureCallback(handle, show_image, nullptr);
     // ArducamRegisterEventCallback(handle, event_process, nullptr);
     ArducamRegisterMessageCallback(handle, error_process, nullptr);
     ArducamStartCamera(handle);
