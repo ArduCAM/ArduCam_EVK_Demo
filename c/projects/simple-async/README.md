@@ -7,7 +7,7 @@ This is a demo for reading and displaying images with sync mode.
 <!-- git clone https://github.com/ArduCAM/ArduCAM_USB_Camera_Shield_Cpp_Demo.git -->
 <!-- cd ArduCAM_USB_Camera_Shield_Cpp_Demo -->
 ```
-cd c/projects/simple
+cd c/projects/simple-async
 mkdir -p build && cd build && cmake ..
 make -j
 ```
@@ -15,5 +15,5 @@ make -j
 ### Run
 
 ```
-./demo_c_simple <path/config-file-name>
+./demo_c_simple_async <path/config-file-name>
 ```

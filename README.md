@@ -1,6 +1,7 @@
 # Introduction
 
 This is the new SDK for Arducam EVK, currently in beta version and only supports Linux.
+You can access the accompanying [documentation](https://www.arducam.com/docs/arducam-evk/).
 
 ## Installation dependence
 
