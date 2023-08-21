@@ -139,6 +139,17 @@ python -m function.list_mode -c <config> -l
 python -m function.list_mode -c <config> -i <mode_id>
 ```
 
+Controls
+
+> Liat all controls
+
+```shell
+# show help
+python -m function.controls --help
+# run
+python -m function.controls -c <config>
+```
+
 ## Project
 
 ### Run sync mode
