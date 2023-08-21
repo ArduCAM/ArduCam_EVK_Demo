@@ -1,7 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <chrono>
+#include <thread>
+
 #include "utils.h"
+
+void callback(ArducamImageFrame image, void *user_data) {
+    show_image(image);
+    cv::waitKey(1);
+}
 
 int main(int argc, char **argv) {
     using namespace std::literals;
@@ -67,23 +75,11 @@ int main(int argc, char **argv) {
     ArducamGetCameraConfig(handle, &config);
     printf("width: %d, height: %d\n", config.width, config.height);
 
+    ArducamRegisterCaptureCallback(handle, callback, NULL);
+
     ArducamStartCamera(handle);
 
-    while (true) {
-        ArducamImageFrame image;
-        ret = ArducamCaptureImage(handle, &image, 1000);
-        if (ret) {
-            printf("Error reading frame.\n");
-            continue;
-        }
-        show_image(image);
-
-        int key = cv::waitKey(1);
-        if (key == 'q') {
-            break;
-        }
-        ArducamFreeImage(handle, image);
-    }
+    std::this_thread::sleep_for(2s);
 
     ArducamCloseCamera(handle);
     ArducamFreeDeviceList();
