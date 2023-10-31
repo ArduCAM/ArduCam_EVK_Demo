@@ -17,7 +17,7 @@ void show_image(Arducam::Camera &camera, ArducamImageFrame image) {
     show_image(image);
 }
 
-void PrintDeviceInfo(Arducam::Camera camera, ArducamDeviceHandle device) {
+void PrintDeviceInfo(Arducam::Camera &camera, ArducamDeviceHandle device) {
     printf("device id vendor: 0x%04X\n", device->id_vendor);
     printf("device id product: 0x%04X\n", device->id_product);
     printf("device in used: %d\n", device->in_used);
@@ -32,7 +32,7 @@ void PrintDeviceInfo(Arducam::Camera camera, ArducamDeviceHandle device) {
 }
 
 #define USB_CPLD_I2C_ADDRESS 0x46
-void dumpDeviceInfo(Arducam::Camera camera) {
+void dumpDeviceInfo(Arducam::Camera &camera) {
     uint32_t version = 0, year = 0, mouth = 0, day = 0;
     version = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x00);
     year = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x05);
