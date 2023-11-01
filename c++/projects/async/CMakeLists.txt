@@ -9,6 +9,8 @@ project(${APP_NAME}
 include(../../CppOption.cmake)
 include(../FindOpenCV.cmake)
 
+find_package(Threads REQUIRED)
+
 add_executable(${APP_NAME}
   main.cpp
   utils.cpp
@@ -16,4 +18,5 @@ add_executable(${APP_NAME}
 
 target_link_libraries(${APP_NAME}
   ${CORE_LIBS}
+  Threads::Threads
 )
