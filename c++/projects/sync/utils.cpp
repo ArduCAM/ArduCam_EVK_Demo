@@ -35,7 +35,7 @@ cv::Mat from_image(ArducamImageFrame image) {
     return color_frame;
 }
 
-void show_image(ArducamImageFrame image) {
-    cv::imshow("Test", from_image(image));
-    cv::setWindowTitle("Test", "Test " + std::to_string(image.seq));
+void show_image(ArducamImageFrame image, const char *id) {
+    cv::imshow(id, from_image(image));
+    cv::setWindowTitle(id, "Test " + std::to_string(image.seq));
 }
