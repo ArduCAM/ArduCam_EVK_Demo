@@ -5,4 +5,4 @@
 #include "arducam/arducam_evk_sdk.h"
 
 cv::Mat from_image(ArducamImageFrame image);
-void show_image(ArducamImageFrame image);
+void show_image(ArducamImageFrame image, const char *id);
