@@ -19,7 +19,7 @@ void preview(Arducam::Camera &camera, ArducamImageFrame image) {
         event_cond.notify_one();
     }
 
-    show_image(image);
+    show_image(image, "Test");
 }
 
 void error_process(Arducam::Camera &camera, ArducamLoggerLevel type, std::string_view error) {

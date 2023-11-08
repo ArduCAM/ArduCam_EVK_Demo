@@ -21,7 +21,7 @@ void show_image(ArducamCameraHandle handle, ArducamImageFrame image) {
 
     printf("image[%d] with resolution: %d x %d\n", image.seq, image.format.width, image.format.height);
 
-    show_image(image);
+    show_image(image, "Test");
 }
 
 void PrintDeviceInfo(ArducamCameraHandle handle, ArducamDeviceHandle device) {

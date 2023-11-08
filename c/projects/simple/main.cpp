@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
             printf("Error reading frame.\n");
             continue;
         }
-        show_image(image);
+        show_image(image, "Test");
 
         int key = cv::waitKey(1);
         if (key == 'q') {
