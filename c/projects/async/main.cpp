@@ -18,7 +18,7 @@ void show_image(ArducamImageFrame image, void *user_data) {
 
     printf("image[%d] with resolution: %d x %d\n", image.seq, image.format.width, image.format.height);
     // display frame with opencv
-    show_image(image);
+    show_image(image, "Test");
 }
 
 void event_process(ArducamEventCode event, void *user_data) {

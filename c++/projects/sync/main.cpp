@@ -14,7 +14,7 @@ void show_image(Arducam::Camera &camera, ArducamImageFrame image) {
         exit_flag = true;
     }
 
-    show_image(image);
+    show_image(image, "Test");
 }
 
 void PrintDeviceInfo(Arducam::Camera &camera, ArducamDeviceHandle device) {

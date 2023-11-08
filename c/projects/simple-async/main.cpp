@@ -7,7 +7,7 @@
 #include "utils.h"
 
 void callback(ArducamImageFrame image, void *user_data) {
-    show_image(image);
+    show_image(image, "Test");
     cv::waitKey(1);
 }
 
