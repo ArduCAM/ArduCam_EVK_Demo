@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.0)
-
 if (NOT DEFINED Find_OpenCV_CMAKE_OPTION)
     set(Find_OpenCV_CMAKE_OPTION ON)
 

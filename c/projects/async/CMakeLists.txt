@@ -20,3 +20,5 @@ target_link_libraries(${APP_NAME}
   ${CORE_LIBS}
   Threads::Threads
 )
+
+copy_dll_to(${APP_NAME})

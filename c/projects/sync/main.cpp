@@ -104,8 +104,8 @@ int main(int argc, char **argv) {
         ArducamGetCameraConfig(handle, &config);
         printf("width: %d, height: %d\n", config.width, config.height);
     } else {
-        ArducamCameraConfig *configs;
-        uint32_t *ids;
+        ArducamCameraConfig *configs = nullptr;
+        uint32_t *ids = nullptr;
         ret = ArducamListMode(handle, &configs, &ids, &mode_size);
         if (ret) {
             printf("Failed to get schema information\n");
