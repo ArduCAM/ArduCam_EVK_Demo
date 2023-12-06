@@ -17,3 +17,5 @@ add_executable(${APP_NAME}
 target_link_libraries(${APP_NAME}
   ${CORE_LIBS}
 )
+
+copy_dll_to(${APP_NAME})

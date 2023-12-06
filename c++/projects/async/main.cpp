@@ -12,7 +12,7 @@ uint8_t key = 0;
 std::mutex mtx;
 std::condition_variable event_cond;
 
-void preview(Arducam::Camera &camera, ArducamImageFrame image) {
+void preview(Arducam::Camera& camera, ArducamImageFrame image) {
     int key = cv::waitKey(1);
     if (key != -1) {
         ::key = key;
@@ -22,37 +22,45 @@ void preview(Arducam::Camera &camera, ArducamImageFrame image) {
     show_image(image, "Test");
 }
 
-void error_process(Arducam::Camera &camera, ArducamLoggerLevel type, std::string_view error) {
+void error_process(Arducam::Camera& camera, ArducamLoggerLevel type, std::string_view error) {
     printf("[Error] %s\n", error.data());
 }
 
-void PrintDeviceInfo(Arducam::Camera &camera, ArducamDeviceHandle device) {
+void PrintDeviceInfo(Arducam::Camera& camera, ArducamDeviceHandle device) {
     printf("device id vendor: 0x%04X\n", device->id_vendor);
     printf("device id product: 0x%04X\n", device->id_product);
     printf("device in used: %d\n", device->in_used);
 
-    const uint8_t *serial_number = device->serial_number;
+    const uint8_t* serial_number = device->serial_number;
     printf("device serial number: %c%c%c%c-%c%c%c%c-%c%c%c%c\n", serial_number[0], serial_number[1], serial_number[2],
            serial_number[3], serial_number[4], serial_number[5], serial_number[6], serial_number[7], serial_number[8],
            serial_number[9], serial_number[10], serial_number[11]);
-
-    printf("device usb type: %s\n", camera.usbType().data());
+    printf("device usb type: %s\n", camera.usbType());
     printf("device speed: %d\n", device->speed);
 }
 
 #define USB_CPLD_I2C_ADDRESS 0x46
-void dumpDeviceInfo(Arducam::Camera &camera) {
-    uint32_t version = 0, year = 0, mouth = 0, day = 0;
-    version = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x00);
-    year = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x05);
-    mouth = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x06);
-    day = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x07);
-    printf("CPLD version: v%d.%d date: 20%d-%02d-%02d\n", version >> 4, version & 0x0F, year, mouth, day);
-    Arducam::Camera::BoardConfig boardConfig = camera.readBoardConfig(0x80, 0x00, 0x00, 2);
-    printf("fw_version: v%d.%d \n", boardConfig[0] & 0xFF, boardConfig[1] & 0xFF);
-}
+#ifdef WITH_STD_OPTIONAL
+#define read_8_8(camera, addr) camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, addr).value();
+#else
+#define read_8_8(camera, addr) camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, addr);
+#endif
 
-int main(int argc, char **argv) {
+void dumpDeviceInfo(Arducam::Camera& camera) noexcept {
+    uint32_t version = 0, year = 0, mouth = 0, day = 0;
+    version = read_8_8(camera, 0x00);
+    year = read_8_8(camera, 0x05);
+    mouth = read_8_8(camera, 0x06);
+    day = read_8_8(camera, 0x07);
+    printf("CPLD version: v%d.%d date: 20%d-%02d-%02d\n", version >> 4, version & 0x0F, year, mouth, day);
+    uint8_t data[16];
+    if (camera.readBoardConfig(0x80, 0x00, 0x00, 2, data)) {
+        printf("fw_version: v%d.%d \n", data[0] & 0xFF, data[1] & 0xFF);
+    }
+}
+#undef read_8_8
+
+int main(int argc, char** argv) {
     using namespace std::literals;
 
     std::string_view config;

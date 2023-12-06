@@ -1,5 +1,3 @@
-cmake_minimum_required(VERSION 3.0)
-
 if (NOT DEFINED CPP_CMAKE_OPTION)
     set(CPP_CMAKE_OPTION ON)
 
@@ -14,16 +12,43 @@ if (NOT DEFINED CPP_CMAKE_OPTION)
         message(STATUS "optional: C++20")
     endif(CMAKE_COMPILER_IS_GNUCXX)
 
-    set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -g2 -ggdb -fsanitize=address -fsanitize=leak")
+    if(WITH_ADDRESS_SANITIZE)
+        set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -fsanitize=address")
+    endif(WITH_ADDRESS_SANITIZE)
+
     if(MSVC)
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG /MTd")
         set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+    else(MSVC)
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g2 -ggdb -fsanitize=leak")
     endif(MSVC)
+
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fPIC")
 
     if(NOT DEFINED arducam_evk_cpp_sdk_FOUND)
         find_package(arducam_evk_cpp_sdk)
         message(STATUS "arducam_evk_cpp_sdk version: ${arducam_evk_cpp_sdk_VERSION}")
+        if(WIN32)
+            get_filename_component(EVK_BIN_DIR "${arducam_evk_cpp_sdk_DIR}" PATH)
+            get_filename_component(EVK_BIN_DIR "${EVK_BIN_DIR}" PATH)
+            get_filename_component(EVK_BIN_DIR "${EVK_BIN_DIR}" PATH)
+            set(EVK_BIN_DIR ${EVK_BIN_DIR}/bin)
+            set(EVK_BIN_DEP
+                "${EVK_BIN_DIR}/arducam_config_parser.dll"
+                "${EVK_BIN_DIR}/arducam_controller.dll"
+                "${EVK_BIN_DIR}/arducam_evk_cpp_sdk.dll"
+                "${EVK_BIN_DIR}/arducam_evk_sdk.dll"
+            )
+            function(copy_dll_to TARGET_NAME)
+                add_custom_command(TARGET ${TARGET_NAME} POST_BUILD
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different  # which executes "cmake - E copy_if_different..."
+                        ${EVK_BIN_DEP}
+                        $<TARGET_FILE_DIR:${TARGET_NAME}>)
+            endfunction()
+        else(WIN32)
+            function(copy_dll_to TARGET_NAME)
+            endfunction()
+        endif(WIN32)
     endif()
 
     include_directories(

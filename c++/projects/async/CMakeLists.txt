@@ -16,7 +16,10 @@ add_executable(${APP_NAME}
   utils.cpp
 )
 
+target_compile_definitions(${APP_NAME} PUBLIC ${arducam_evk_cpp_sdk_MACRO_DEFS})
 target_link_libraries(${APP_NAME}
   ${CORE_LIBS}
   Threads::Threads
 )
+
+copy_dll_to(${APP_NAME})

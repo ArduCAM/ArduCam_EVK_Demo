@@ -1,0 +1,27 @@
+﻿{
+  "configurations": [
+    {
+      "name": "x64-Debug",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "inheritEnvironments": [ "msvc_x64_x64" ],
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [
+        {
+          "name": "arducam_evk_cpp_sdk_DIR",
+          "value": "evk_sdk/lib/cmake/arducam_evk_cpp_sdk",
+          "type": "PATH"
+        },
+        {
+          "name": "WITH_OPENCV_WORLD",
+          "value": "True",
+          "type": "BOOL"
+        }
+      ]
+    }
+  ]
+}
