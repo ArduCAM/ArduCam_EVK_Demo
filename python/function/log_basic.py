@@ -5,11 +5,11 @@ def main():
     camera = Camera()
     param = Param()
     if not camera.open(param):  # open camera, return True if success, otherwise return False
-        raise Exception(f"open camera error! {get_error_name(camera.last_error)}")  # get the last error message
-    print(f"Current Log Level: {camera.log_level}")  # get current log level
-    print(f"Set the Log Level to Trace")
+        raise Exception("open camera error! {}".format(get_error_name(camera.last_error)))  # get the last error message
+    print("Current Log Level: {}".format(camera.log_level))  # get current log level
+    print("Set the Log Level to Trace")
     camera.log_level = LoggerLevel.Trace  # set log level to info
-    print(f"Current Log Level: {camera.log_level}")  # get current log level
+    print("Current Log Level: {}".format(camera.log_level))  # get current log level
 
     # set camera config
     camera_config = CameraConfig()
@@ -20,7 +20,7 @@ def main():
     # init camera
     camera.init()
 
-    print(f"Disable Console Log")
+    print("Disable Console Log")
     camera.enable_console_log(False)  # disable console log
     camera.close()
 

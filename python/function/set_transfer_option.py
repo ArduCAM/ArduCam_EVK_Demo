@@ -4,13 +4,19 @@ from typing import Optional, cast
 from ArducamEvkSDK import *
 
 
-def main(config_path: str, count: int, size: int, num: int):
+def main(config_path, count, size, num):
+    """
+    @type config_path: str
+    @type count: int
+    @type size: int
+    @type num: int
+    """
     camera = Camera()
     param = Param()
     param.config_file_name = config_path  # a path of config file
     param.bin_config = config_path.endswith(".bin")  # if the config file is a bin file
     if not camera.open(param):  # open camera, return True if success, otherwise return False
-        raise Exception(f"open camera error! {get_error_name(camera.last_error)}")  # get the last error message
+        raise Exception("open camera error! {}".format(get_error_name(camera.last_error)))  # get the last error message
     camera.init()  # init camera
 
     # set transfer option, this should before camera.start()
@@ -21,7 +27,7 @@ def main(config_path: str, count: int, size: int, num: int):
         # the capture should return a Frame object or None
         image = cast(Optional[Frame], camera.capture(1000))
         if image is not None:
-            print(f"get frame({image.format.width}x{image.format.height}) from camera.")
+            print("get frame({}x{}) from camera.".format(image.format.width, image.format.height))
     camera.stop()
     camera.close()
 

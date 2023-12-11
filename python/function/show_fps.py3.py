@@ -1,14 +1,10 @@
 import argparse
-from typing import Optional, cast
+import asyncio
 
 from ArducamEvkSDK import *
 
 
-def main(config_path, num):
-    """
-    @type config_path: str
-    @type num: int
-    """
+async def main(config_path: str):
     camera = Camera()
     param = Param()
     param.config_file_name = config_path  # a path of config file
@@ -17,11 +13,12 @@ def main(config_path, num):
         raise Exception("open camera error! {}".format(get_error_name(camera.last_error)))  # get the last error message
     camera.init()  # init camera
     camera.start()
-    for i in range(num):
-        # the capture should return a Frame object or None
-        image = cast(Optional[Frame], camera.capture(1000))
-        if image is not None:
-            print("get frame({}x{}) from camera.".format(image.format.width, image.format.height))
+    # wait 2 seconds
+    await asyncio.sleep(2)
+
+    # show fps and bandwidth
+    print("fps: {}, bandwidth: {}B/s ({:.2f}MB/s)".format(camera.capture_fps, camera.bandwidth, camera.bandwidth / 1024 / 1024))
+
     camera.stop()
     camera.close()
 
@@ -34,13 +31,7 @@ if __name__ == '__main__':
         type=str,
         required=True,
     )
-    parse.add_argument(
-        "-n", "--take",
-        help="Number of frames to take.",
-        type=int,
-        default=1,
-    )
 
     args = parse.parse_args()
 
-    main(args.config, args.take)
+    asyncio.run(main(args.config))
