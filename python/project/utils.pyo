@@ -71,7 +71,7 @@ def convert_color(image, color_mode):
     return image
 
 
-def convert_image(data, cfg):
+def convert_image(data: np.ndarray, cfg: ArducamEvkSDK.Format):
     Width = cfg.width
     Height = cfg.height
     bitWidth = cfg.bit_depth
@@ -108,7 +108,7 @@ def convert_image(data, cfg):
     return image
 
 
-def from_image(image):
+def from_image(image: ArducamEvkSDK.Frame):
     color_frame = convert_image(image.data, image.format)
 
     # if color_frame width > 720, resize it to 720
@@ -120,36 +120,35 @@ def from_image(image):
     return color_frame
 
 
-def show_image(image):
+def show_image(image: ArducamEvkSDK.Frame):
     cv2.imshow("Test", from_image(image))
     cv2.setWindowTitle("Test", "Test " + str(image.seq))
 
 
 class WaitGroup(object):
-    """
-    WaitGroup is like Go sync.WaitGroup.
+    """WaitGroup is like Go sync.WaitGroup.
 
     Without all the useful corner cases.
     """
 
-    def __init__(self, init_count=0):
-        self.__count = init_count
-        self.__cv = threading.Condition()
+    def __init__(self, init_count: int = 0):
+        self.count = init_count
+        self.cv = threading.Condition()
 
     def add(self, n):
-        self.__cv.acquire()
-        self.__count += n
-        self.__cv.release()
+        self.cv.acquire()
+        self.count += n
+        self.cv.release()
 
     def done(self):
-        self.__cv.acquire()
-        self.__count -= 1
-        if self.__count == 0:
-            self.__cv.notify_all()
-        self.__cv.release()
+        self.cv.acquire()
+        self.count -= 1
+        if self.count == 0:
+            self.cv.notify_all()
+        self.cv.release()
 
     def wait(self):
-        self.__cv.acquire()
-        while self.__count > 0:
-            self.__cv.wait()
-        self.__cv.release()
+        self.cv.acquire()
+        while self.count > 0:
+            self.cv.wait()
+        self.cv.release()

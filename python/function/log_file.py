@@ -6,9 +6,9 @@ def main():
     param = Param()
     log_file = "log.txt"
     if not camera.open(param):  # open camera, return True if success, otherwise return False
-        raise Exception(f"open camera error! {get_error_name(camera.last_error)}")  # get the last error message
-    print(f"Disable Console Log")
-    print(f"Save Log to {log_file}")
+        raise Exception("open camera error! {}".format(get_error_name(camera.last_error)))  # get the last error message
+    print("Disable Console Log")
+    print("Save Log to {}".format(log_file))
     camera.enable_console_log(False)  # disable console log
     camera.log_level = LoggerLevel.Trace  # set log level to info
     camera.add_log_file(log_file)  # add log file
@@ -23,7 +23,7 @@ def main():
     camera.init()
     camera.close()
 
-    print(f"Log File Content:")
+    print("Log File Content:")
     with open(log_file, "r") as f:
         print(f.read())
 

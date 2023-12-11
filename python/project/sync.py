@@ -4,7 +4,11 @@ from typing import Optional, cast
 import cv2
 from ArducamEvkSDK import Camera, Param, LoggerLevel, Frame
 
-from project.utils import show_image
+from utils import show_image
+
+
+def log_callback(level, msg):
+    print(msg)
 
 
 def main(config):
@@ -13,7 +17,7 @@ def main(config):
     param.config_file_name = config
     param.bin_config = config.endswith(".bin")
     camera.open(param)
-    camera.set_message_callback(lambda l, msg: print(msg))
+    camera.set_message_callback(log_callback)
     camera.log_level = LoggerLevel.Info
     print(camera.usb_type)
 
@@ -22,9 +26,9 @@ def main(config):
     camera.init()
     camera.start()
     config = camera.config
-    print(f"{config.width=}, {config.height=}")
+    print("config.width={}, config.height={}".format(config.width, config.height))
     while True:
-        image: Optional[Frame] = cast(Optional[Frame], camera.capture(1000))
+        image = cast(Optional[Frame], camera.capture(1000))
         if image is None:
             continue
         show_image(image)
