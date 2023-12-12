@@ -1,6 +1,9 @@
 if (NOT DEFINED CPP_CMAKE_OPTION)
     set(CPP_CMAKE_OPTION ON)
 
+    option(WITH_ADDRESS_SANITIZE "Use address sanitize" OFF)
+    option(WITH_LEAK_SANITIZE "Use leak sanitize" OFF)
+
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
     add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
@@ -13,14 +16,17 @@ if (NOT DEFINED CPP_CMAKE_OPTION)
     endif(CMAKE_COMPILER_IS_GNUCXX)
 
     if(WITH_ADDRESS_SANITIZE)
-        set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -fsanitize=address")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=address")
     endif(WITH_ADDRESS_SANITIZE)
+    if(WITH_LEAK_SANITIZE)
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fsanitize=leak")
+    endif(WITH_LEAK_SANITIZE)
 
     if(MSVC)
         set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG /MTd")
         set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
     else(MSVC)
-        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g2 -ggdb -fsanitize=leak")
+        set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g2 -ggdb")
     endif(MSVC)
 
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -fPIC")
