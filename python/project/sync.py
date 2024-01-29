@@ -16,7 +16,9 @@ def main(config):
     param = Param()
     param.config_file_name = config
     param.bin_config = config.endswith(".bin")
-    camera.open(param)
+    r = camera.open(param)
+    if not r:
+        raise Exception("open camera error! ret={}".format(camera.last_error))
     camera.set_message_callback(log_callback)
     camera.log_level = LoggerLevel.Info
     print(camera.usb_type)
