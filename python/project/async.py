@@ -12,8 +12,8 @@ def main(config):
     param.bin_config = config.endswith(".bin")
     camera = Camera()
     r = camera.open(param)
-    if r != 0:
-        raise Exception("open camera error! ret={}".format(hex(r)))
+    if not r:
+        raise Exception("open camera error! ret={}".format(camera.last_error))
     camera.init()
     group = WaitGroup(1)
 
