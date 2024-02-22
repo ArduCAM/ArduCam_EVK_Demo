@@ -18,7 +18,7 @@ def main(config_path):
 
     # show all controls
     for ct in camera.controls:
-        print("{}({}): range({}:{}:{}), default={}".format(ct.name, ct.func, ct.min, ct.min, ct.step, ct.default))
+        print("{}({}): range({}:{}:{}), default={}".format(ct.name, ct.func, ct.min, ct.max, ct.step, ct.default))
     camera.set_control("setFramerate", 1)  # set framerate to 1 fps
 
     camera.stop()
