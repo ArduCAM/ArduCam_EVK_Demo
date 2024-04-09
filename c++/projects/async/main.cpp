@@ -80,7 +80,7 @@ int main(int argc, char** argv) {
         exit(-1);
     }
 
-    Arducam::DeviceList device_list = Arducam::Camera::listDevices();
+    Arducam::DeviceList device_list = Arducam::DeviceList::listDevices();
     const uint32_t device_list_size = device_list.size();
     printf("device list size: %d\n", device_list_size);
     if (deviceID >= device_list_size) {

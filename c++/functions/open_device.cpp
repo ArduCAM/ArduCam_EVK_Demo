@@ -6,7 +6,7 @@ void open_device(const char* config_path, bool bin_config, int device_index) {
     Arducam::Camera camera;
     Arducam::Param param;
     // get all devices
-    Arducam::DeviceList devs = Arducam::Camera::listDevices();
+    Arducam::DeviceList devs = Arducam::DeviceList::listDevices();
     // make the index start from 0
     device_index -= 1;
 
