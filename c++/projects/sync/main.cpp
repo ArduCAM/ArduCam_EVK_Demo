@@ -64,7 +64,7 @@ int main(int argc, char **argv) {
         exit(-1);
     }
 
-    Arducam::DeviceList device_list = Arducam::Camera::listDevices();
+    Arducam::DeviceList device_list = Arducam::DeviceList::listDevices();
     const uint32_t device_list_size = device_list.size();
     printf("device list size: %d\n", device_list_size);
     if (deviceID >= device_list_size) {
@@ -92,8 +92,11 @@ int main(int argc, char **argv) {
     if (camera.configType() == Arducam::ConfigType::TEXT) {
         printf("width: %d, height: %d\n", camera.width(), camera.height());
     } else if (camera.configType() == Arducam::ConfigType::BINARY) {
-        auto &&ret = camera.listMode();
-        printf("Mode size: %d\n", (int)ret.configs.size());
+        auto size = camera.modeSize();
+        std::vector<uint32_t> ids(size);
+        std::vector<ArducamCameraConfig> configs(size);
+        auto ret = camera.listMode(ids.data(), configs.data());
+        printf("Mode size: %d\n", (int)size);
     }
 
     camera.start();
