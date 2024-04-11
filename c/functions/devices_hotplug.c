@@ -41,5 +41,5 @@ void device_hotplug() {
     ArducamListDevice(&devs);
     ArducamDeviceListRegisterEventCallback(devs, callback, NULL);
     usleep(10 * 1000 * 1000);
-    ArducamFreeDeviceList(devs);
+    ArducamFreeDeviceList();
 }

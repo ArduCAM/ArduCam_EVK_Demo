@@ -29,6 +29,8 @@ void callback(ArducamEventCode event, ArducamDeviceHandle device) {
     case DeviceDisconnect:
         std::cout << "Device[" << device << "][" << to_name(device->serial_number) << "] disconnected\n";
         break;
+    default:
+        break;
     }
 }
 
