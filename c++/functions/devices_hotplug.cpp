@@ -4,9 +4,11 @@
 #include <iostream>
 #include <thread>
 
+#include "options.h"
+
 using namespace std::literals;
 
-std::string to_name(const uint8_t serial_number[16]) {
+static std::string to_name(const uint8_t serial_number[16]) {
     std::string arr = "xxxx-xxxx-xxxx";
     // xxxx-xxxx-xxxx
     for (int i = 0; i < 4; i++) {
@@ -21,7 +23,7 @@ std::string to_name(const uint8_t serial_number[16]) {
     return arr;
 }
 
-void callback(ArducamEventCode event, ArducamDeviceHandle device) {
+static void callback(ArducamEventCode event, ArducamDeviceHandle device) {
     switch (event) {
     case DeviceConnect:
         std::cout << "New device[" << device << "] connected\n";  // this is a null pointer
@@ -34,8 +36,25 @@ void callback(ArducamEventCode event, ArducamDeviceHandle device) {
     }
 }
 
-void device_hotplug() {
+void device_hotplug(double delay) {
     Arducam::DeviceList devs = Arducam::DeviceList::listDevices();
     devs.setEventCallback(callback);
-    std::this_thread::sleep_for(10s);
+    std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(delay * 1000)));
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (dbl, d, delay, "Delay time in seconds.")
+    );
+    // clang-format on
+    const char* info = "Monitor device hotplug events.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+
+    double delay_val = GET_OR_DEFAULT(delay, 10.0);
+
+    device_hotplug(delay_val);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

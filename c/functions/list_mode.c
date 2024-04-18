@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "options.h"
+
 void list_mode(const char *config_path, int mode_id, bool only_list) {
     ArducamCameraHandle camera;
     ArducamCameraOpenParam param;
@@ -24,9 +26,9 @@ void list_mode(const char *config_path, int mode_id, bool only_list) {
         // print sensor info
         printf("Sensor info: \n");
         for (int i = 0; i < size; i++) {
-            auto info = configs[i];
-            auto id_ = ids[i];
-            printf("%d: %dx%d\n", id_, info.width, info.height);
+            const ArducamCameraConfig *info = configs + i;
+            const uint32_t *id_ = ids + i;
+            printf("%d: %dx%d\n", *id_, info->width, info->height);
         }
         ArducamFreeModeList(camera, configs, ids);
     } else {
@@ -48,4 +50,28 @@ void list_mode(const char *config_path, int mode_id, bool only_list) {
 
         ArducamCloseCamera(camera);
     }
+}
+
+int main(int argc, char **argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file."),
+        (int, i, id, "Sensor Mode ID."),
+        (lit, l, list, "List all sensor mode.")
+    );
+    // clang-format on
+    const char* info = "List sensor mode or switch to sensor mode.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+
+    if (!bin) {
+        fprintf(stderr, "List mode only support bin config.\n");
+        return -1;
+    }
+    list_mode(path, GET_OR_DEFAULT(id, 0), list->count > 0);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

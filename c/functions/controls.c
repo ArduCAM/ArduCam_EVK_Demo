@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void capture(const char* config_path, bool bin_config, int num) {
+#include "options.h"
+
+void show_controls(const char* config_path, bool bin_config) {
     ArducamCameraHandle camera;
     ArducamCameraOpenParam param;
     ArducamDefaultParam(&param);           // init camera open parameters with the default values
@@ -24,11 +26,29 @@ void capture(const char* config_path, bool bin_config, int num) {
     uint32_t control_num = 0;
     ArducamListCtrls(camera, &controls, &control_num);
     for (uint32_t i = 0; i < control_num; i++) {
-        printf("%s(%s): range(%d:%d:%d), default=%d\n", controls[i].name, controls[i].func, controls[i].min,
-               controls[i].max, controls[i].step, controls[i].def);
+        printf("%s(%s): range(%d:%d:%d), default=%d\n", controls[i].name, controls[i].func, (int)controls[i].min,
+               (int)controls[i].max, controls[i].step, (int)controls[i].def);
     }
     ArducamSetCtrl(camera, "setFramerate", 1);  // set framerate to 1 fps
 
     ArducamStopCamera(camera);
     ArducamCloseCamera(camera);
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file.")
+    );
+    // clang-format on
+    const char* info = "Show all controls.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+
+    show_controls(path, bin);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

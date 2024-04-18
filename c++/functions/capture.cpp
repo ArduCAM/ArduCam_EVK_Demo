@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "options.h"
+
 void capture(const char* config_path, bool bin_config, int num) {
     Arducam::Camera camera;
     Arducam::Param param;
@@ -19,8 +21,29 @@ void capture(const char* config_path, bool bin_config, int num) {
         // the capture return true if success, otherwise return false
         if (camera.capture(image, 1000)) {
             std::cout << "get frame(" << image.format.width << "x" << image.format.height << ") from camera.\n";
+            camera.freeImage(image);
         }
     }
     camera.stop();
     camera.close();
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file."),
+        (int, n, take, "Number of frames to take.")
+    );
+    // clang-format on
+    const char* info = "Show all controls.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+    int take_val = GET_OR_DEFAULT(take, 1);
+
+    capture(path, bin, take_val);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

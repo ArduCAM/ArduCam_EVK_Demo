@@ -4,7 +4,9 @@
 #include <iostream>
 #include <thread>
 
-void callback(Arducam::Frame image) {
+#include "options.h"
+
+static void callback(Arducam::Frame image) {
     std::cout << "get frame(" << image.format.width << "x" << image.format.height << ") from camera.\n";
 }
 
@@ -28,4 +30,24 @@ void capture_async(const char* config_path, bool bin_config, double delay) {
     std::this_thread::sleep_for(std::chrono::duration<double>(delay));
     camera.stop();
     camera.close();
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file."),
+        (dbl, d, delay, "Delay time in seconds.")
+    );
+    // clang-format on
+    const char* info = "Capture images asynchronously.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+    double delay_val = GET_OR_DEFAULT(delay, 1.0);
+
+    capture_async(path, bin, delay_val);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

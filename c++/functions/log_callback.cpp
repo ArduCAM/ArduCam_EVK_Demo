@@ -2,28 +2,31 @@
 #include <cstdlib>
 #include <iostream>
 
-const char* to_name(Arducam::LoggerLevel level) {
+#include "options.h"
+
+static const char* to_name(Arducam::LoggerLevel level) {
     switch (level) {
-        case Arducam::LoggerLevel::trace:
-            return "trace";
-        case Arducam::LoggerLevel::debug:
-            return "debug";
-        case Arducam::LoggerLevel::info:
-            return "info";
-        case Arducam::LoggerLevel::warn:
-            return "warn";
-        case Arducam::LoggerLevel::err:
-            return "err";
-        case Arducam::LoggerLevel::critical:
-            return "critical";
-        case Arducam::LoggerLevel::off:
-            return "off";
+    case Arducam::LoggerLevel::trace:
+        return "trace";
+    case Arducam::LoggerLevel::debug:
+        return "debug";
+    case Arducam::LoggerLevel::info:
+        return "info";
+    case Arducam::LoggerLevel::warn:
+        return "warn";
+    case Arducam::LoggerLevel::err:
+        return "err";
+    case Arducam::LoggerLevel::critical:
+        return "critical";
+    case Arducam::LoggerLevel::off:
+        return "off";
     }
+    return "unknown";
 }
 
-void log_(Arducam::LoggerLevel level, const std::string& msg) {
+void log_(Arducam::LoggerLevel level, const char* msg, int size) {
     // log callback
-    std::cout << "[" << to_name(level) << "] " << msg << "\n";
+    std::cout << "[" << to_name(level) << "] " << std::string(msg, size) << "\n";
 }
 
 void log_callback() {
@@ -35,9 +38,9 @@ void log_callback() {
         std::exit(-1);
     }
     std::cout << "Disable Console Log\n";
-    camera.enableConsoleLog(false);          // disable console log
+    camera.enableConsoleLog(false);                   // disable console log
     camera.setLogLevel(Arducam::LoggerLevel::trace);  // set log level to info
-    camera.setMessageCallback(log_);         // set log callback
+    camera.setMessageCallback(log_);                  // set log callback
 
     // set camera config
     Arducam::CameraConfig camera_config;
@@ -48,4 +51,9 @@ void log_callback() {
     // init camera
     camera.init();
     camera.close();
+}
+
+int main(int argc, char** argv) {
+    log_callback();
+    return 0;
 }

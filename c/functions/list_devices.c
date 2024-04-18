@@ -1,6 +1,9 @@
 #include <arducam/arducam_evk_sdk.h>
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "options.h"
 
 const char* to_name(char arr[15], const uint8_t serial_number[16]) {
     // xxxx-xxxx-xxxx
@@ -28,4 +31,9 @@ void list_devices() {
         printf("%d: [%04x:%04x] %s\n", index + 1, d->id_vendor, d->id_product, to_name((char[16]){}, d->serial_number));
     }
     ArducamFreeDeviceList();
+}
+
+int main(int argc, char** argv) {
+    list_devices();
+    return 0;
 }

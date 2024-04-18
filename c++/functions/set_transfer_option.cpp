@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "options.h"
+
 void set_transfer_option(const char* config_path, bool bin_config, int count, int size, int num) {
     Arducam::Camera camera;
     Arducam::Param param;
@@ -26,8 +28,33 @@ void set_transfer_option(const char* config_path, bool bin_config, int count, in
         if (camera.capture(frame, 1000)) {
             std::cout << "get frame(" << frame.format.width << "x" << frame.format.height << ") from camera."
                       << "\n";
+            camera.freeImage(frame);
         }
     }
     camera.stop();
     camera.close();
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file."),
+        (int, t, count, "Transfer count."),
+        (int, s, size, "Transfer size."),
+        (int, n, take, "Number of frames to take.")
+    );
+    // clang-format on
+    const char* info = "Set transfer option.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+    int count_val = GET_OR_DEFAULT(count, 30);
+    int size_val = GET_OR_DEFAULT(size, 512 * 1024);
+    int take_val = GET_OR_DEFAULT(take, 1);
+
+    set_transfer_option(path, bin, count_val, size_val, take_val);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

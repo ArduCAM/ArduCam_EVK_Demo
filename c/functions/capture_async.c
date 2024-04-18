@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-void callback(ArducamImageFrame image, void* user_data) {
+#include "options.h"
+
+static void callback(ArducamImageFrame image, void* user_data) {
     printf("get frame(%dx%d) from camera.\n", image.format.width, image.format.height);
 }
 
@@ -33,4 +35,24 @@ void capture_async(const char* config_path, bool bin_config, double delay) {
 
     ArducamStopCamera(camera);
     ArducamCloseCamera(camera);
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file."),
+        (dbl, d, delay, "Delay time in seconds.")
+    );
+    // clang-format on
+    const char* info = "Capture images asynchronously.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+    double delay_val = GET_OR_DEFAULT(delay, 1.0);
+
+    capture_async(path, bin, delay_val);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

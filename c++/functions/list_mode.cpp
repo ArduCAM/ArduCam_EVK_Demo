@@ -2,7 +2,9 @@
 #include <cstdlib>
 #include <iostream>
 
-void list_mode(const char *config_path, int mode_id, bool only_list) {
+#include "options.h"
+
+void list_mode(const char* config_path, int mode_id, bool only_list) {
     Arducam::Camera camera;
     Arducam::Param param;
     param.config_file_name = config_path;  // a path of config file
@@ -13,14 +15,15 @@ void list_mode(const char *config_path, int mode_id, bool only_list) {
         std::exit(-1);
     }
     if (only_list) {  // get the bin config
-        auto configs = camera.listMode();
+        auto configs_size = camera.modeSize();
+        std::vector<ArducamCameraConfig> configs(configs_size);
+        std::vector<uint32_t> config_ids(configs_size);
+        camera.listMode(config_ids.data(), configs.data());
         // print sensor info
         std::cout << "Sensor info: \n";
-        for (auto &&config : configs) {
-            // config is a pair of mode_id and sensor info, if using C++17, you can use structured binding
-            // auto &&[id_, info] = config;
-            auto id_ = config.first;
-            auto info = config.second;
+        for (uint32_t i = 0; i < configs_size; i++) {
+            const auto& id_ = config_ids[i];
+            const auto& info = configs[i];
             std::cout << id_ << ": " << info.width << "x" << info.height << "\n";
         }
     } else {
@@ -40,4 +43,28 @@ void list_mode(const char *config_path, int mode_id, bool only_list) {
 
         camera.close();
     }
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file."),
+        (int, i, id, "Sensor Mode ID."),
+        (lit, l, list, "List all sensor mode.")
+    );
+    // clang-format on
+    const char* info = "List sensor mode or switch to sensor mode.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+
+    if (!bin) {
+        std::cerr << "List mode only support bin config.\n";
+        return -1;
+    }
+    list_mode(path, GET_OR_DEFAULT(id, 0), list->count > 0);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }
