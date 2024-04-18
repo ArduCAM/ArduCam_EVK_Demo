@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "options.h"
+
 void log_file() {
     Arducam::Camera camera;
     Arducam::Param param;
@@ -16,9 +18,9 @@ void log_file() {
     std::cout << "Disable Console Log\n";
     std::cout << "Save Log to " << log_file << "\n";
 
-    camera.enableConsoleLog(false);          // disable console log
+    camera.enableConsoleLog(false);                   // disable console log
     camera.setLogLevel(Arducam::LoggerLevel::trace);  // set log level to info
-    camera.addLogFile(log_file);             // add log file
+    camera.addLogFile(log_file.c_str());              // add log file
 
     // set camera config
     Arducam::CameraConfig camera_config;
@@ -36,4 +38,9 @@ void log_file() {
     while (std::getline(file, line)) {
         std::cout << line << "\n";
     }
+}
+
+int main(int argc, char** argv) {
+    log_file();
+    return 0;
 }

@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "options.h"
+
 void open_device(const char* config_path, bool bin_config, int device_index) {
     ArducamCameraHandle camera;
     ArducamCameraOpenParam param;
@@ -38,4 +40,24 @@ void open_device(const char* config_path, bool bin_config, int device_index) {
     ArducamInitCamera(camera);  // init camera
     // ...
     ArducamCloseCamera(camera);
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file."),
+        (int, d, device, "Device index. Starts from 1. Default is 1.")
+    );
+    // clang-format on
+    const char* info = "Open camera with device index.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+    int device_num = GET_OR_DEFAULT(device, 1);
+
+    open_device(path, bin, device_num);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

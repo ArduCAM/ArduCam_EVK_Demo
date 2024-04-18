@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "options.h"
+
 void open_advanced(const char* config_path, bool bin_config, bool dma_enable) {
     ArducamCameraHandle camera;
     ArducamCameraOpenParam param;
@@ -36,4 +38,23 @@ void open_advanced(const char* config_path, bool bin_config, bool dma_enable) {
     ArducamInitCamera(camera);  // init camera
     // ...
     ArducamCloseCamera(camera);
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file."),
+        (lit, d, dma, "Enable DMA.")
+    );
+    // clang-format on
+    const char* info = "Open camera with advanced options.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+
+    open_advanced(path, bin, dma->count > 0);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

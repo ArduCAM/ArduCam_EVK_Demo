@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const char* to_name(ArducamLoggerLevel level) {
+#include "options.h"
+
+static const char* to_name(ArducamLoggerLevel level) {
     switch (level) {
         case trace:
             return "trace";
@@ -55,4 +57,9 @@ void log_basic() {
     printf("Disable Console Log\n");
     ArducamDisableConsoleLog(camera);  // disable console log
     ArducamCloseCamera(camera);
+}
+
+int main(int argc, char** argv) {
+    log_basic();
+    return 0;
 }

@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "options.h"
+
 void log_file() {
     ArducamCameraHandle camera;
     ArducamCameraOpenParam param;
@@ -39,4 +41,9 @@ void log_file() {
         printf("%s", line);
     }
     fclose(file);
+}
+
+int main(int argc, char** argv) {
+    log_file();
+    return 0;
 }

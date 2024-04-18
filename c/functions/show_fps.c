@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "options.h"
+
 void show_fps(const char* config_path, bool bin_config) {
     ArducamCameraHandle camera;
     ArducamCameraOpenParam param;
@@ -26,10 +28,28 @@ void show_fps(const char* config_path, bool bin_config) {
     sleep(2);
 
     // show fps and bandwidth
-    printf("fps: %f, bandwidth: %d B/s (%.2f MB/s)\n",  //
+    printf("fps: %d, bandwidth: %d B/s (%.2f MB/s)\n",  //
            ArducamGetCaptureFps(camera),                //
            ArducamGetBandwidth(camera),                 //
            ArducamGetBandwidth(camera) / 1024. / 1024);
     ArducamStopCamera(camera);
     ArducamCloseCamera(camera);
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file.")
+    );
+    // clang-format on
+    const char* info = "Show FPS and bandwidth.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+
+    show_fps(path, bin);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }

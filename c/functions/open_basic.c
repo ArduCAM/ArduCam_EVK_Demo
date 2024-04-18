@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "options.h"
+
 void open_basic(const char* config_path, bool bin_config) {
     ArducamCameraHandle camera;
     ArducamCameraOpenParam param;
@@ -21,4 +23,22 @@ void open_basic(const char* config_path, bool bin_config) {
     ArducamInitCamera(camera);  // init camera
     // ...
     ArducamCloseCamera(camera);
+}
+
+int main(int argc, char** argv) {
+    // clang-format off
+    ARGPARSE_DEFINE(parse,
+        (file, c, config, "Path to config file.")
+    );
+    // clang-format on
+    const char* info = "Open camera with basic options.";
+    ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
+    CHECK_REQUIRED(config, return 1);
+
+    GET_CONFIG(config, path, bin);
+
+    open_basic(path, bin);
+
+    ARGPARSE_FREE(parse);
+    return 0;
 }
