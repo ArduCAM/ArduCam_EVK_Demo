@@ -92,8 +92,7 @@ int main(int argc, char **argv) {
     if (camera.configType() == Arducam::ConfigType::TEXT) {
         printf("width: %d, height: %d\n", camera.width(), camera.height());
     } else if (camera.configType() == Arducam::ConfigType::BINARY) {
-        auto &&ret = camera.listMode();
-        printf("Mode size: %d\n", (int)ret.configs.size());
+        printf("Mode size: %d\n", (int)camera.modeSize());
     }
 
     camera.start();
