@@ -1,5 +1,5 @@
-#include <arducam/arducam_evk_sdk.h>
 #include <stdbool.h>
+#include <arducam/arducam_evk_sdk.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,9 +24,9 @@ void list_mode(const char *config_path, int mode_id, bool only_list) {
         // print sensor info
         printf("Sensor info: \n");
         for (int i = 0; i < size; i++) {
-            auto info = configs[i];
-            auto id_ = ids[i];
-            printf("%d: %dx%d\n", id_, info.width, info.height);
+            const ArducamCameraConfig *info = &configs[i];
+            const uint32_t *id_ = &ids[i];
+            printf("%d: %dx%d\n", (int)*id_, (int)info->width, (int)info->height);
         }
         ArducamFreeModeList(camera, configs, ids);
     } else {

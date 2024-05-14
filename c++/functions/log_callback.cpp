@@ -21,9 +21,9 @@ const char* to_name(Arducam::LoggerLevel level) {
     }
 }
 
-void log_(Arducam::LoggerLevel level, const std::string& msg) {
+void log_(Arducam::LoggerLevel level, const char* msg, int size) {
     // log callback
-    std::cout << "[" << to_name(level) << "] " << msg << "\n";
+    std::cout << "[" << to_name(level) << "] " << std::string(msg, size) << "\n";
 }
 
 void log_callback() {

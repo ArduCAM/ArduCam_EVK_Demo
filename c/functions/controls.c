@@ -1,5 +1,5 @@
-#include <arducam/arducam_evk_sdk.h>
 #include <stdbool.h>
+#include <arducam/arducam_evk_sdk.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,8 +24,8 @@ void capture(const char* config_path, bool bin_config, int num) {
     uint32_t control_num = 0;
     ArducamListCtrls(camera, &controls, &control_num);
     for (uint32_t i = 0; i < control_num; i++) {
-        printf("%s(%s): range(%d:%d:%d), default=%d\n", controls[i].name, controls[i].func, controls[i].min,
-               controls[i].max, controls[i].step, controls[i].def);
+        printf("%s(%s): range(%d:%d:%d), default=%d\n", controls[i].name, controls[i].func, (int)controls[i].min,
+               (int)controls[i].max, (int)controls[i].step, (int)controls[i].def);
     }
     ArducamSetCtrl(camera, "setFramerate", 1);  // set framerate to 1 fps
 

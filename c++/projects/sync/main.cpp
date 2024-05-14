@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include <string_view>
 
 #include "utils.h"
 
@@ -48,7 +47,7 @@ void dumpDeviceInfo(Arducam::Camera &camera) {
 int main(int argc, char **argv) {
     using namespace std::literals;
 
-    std::string_view config;
+    std::string config;
     bool bin_config = false;
     uint32_t deviceID = 0;
     if (argc >= 2) {

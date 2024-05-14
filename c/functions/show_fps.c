@@ -1,5 +1,5 @@
-#include <arducam/arducam_evk_sdk.h>
 #include <stdbool.h>
+#include <arducam/arducam_evk_sdk.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
