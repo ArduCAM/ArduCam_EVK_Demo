@@ -37,5 +37,6 @@ cv::Mat from_image(ArducamImageFrame image) {
 
 void show_image(ArducamImageFrame image, const char *id) {
     cv::imshow(id, from_image(image));
-    cv::setWindowTitle(id, "Test " + std::to_string(image.seq));
+    // low version of OpenCV does not support cv::setWindowTitle
+    // cv::setWindowTitle(id, "Test " + std::to_string(image.seq));
 }

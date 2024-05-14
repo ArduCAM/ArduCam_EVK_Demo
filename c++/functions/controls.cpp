@@ -16,7 +16,10 @@ void capture(const char* config_path, bool bin_config, int num) {
     camera.start();
 
     // show all controls
-    for (const Control& control : camera.controls()) {
+    const Control* controls = camera.controls();
+    const int size = camera.controlSize();
+    for (int i = 0; i < size; i++) {
+        const Control& control = controls[i];
         std::cout << control.name << "(" << control.func << "): range(" << control.min << ":" << control.max << ":"
                   << control.step << "), default=" << control.def << "\n";
     }

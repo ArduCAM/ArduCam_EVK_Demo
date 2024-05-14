@@ -1,6 +1,7 @@
 #include <arducam/ArducamCamera.hpp>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 void list_mode(const char *config_path, int mode_id, bool only_list) {
     Arducam::Camera camera;
@@ -13,14 +14,15 @@ void list_mode(const char *config_path, int mode_id, bool only_list) {
         std::exit(-1);
     }
     if (only_list) {  // get the bin config
-        auto configs = camera.listMode();
+        auto configs_size = camera.modeSize();
+        std::vector<ArducamCameraConfig> configs(configs_size);
+        std::vector<uint32_t> config_ids(configs_size);
+        camera.listMode(config_ids.data(), configs.data());
         // print sensor info
         std::cout << "Sensor info: \n";
-        for (auto &&config : configs) {
-            // config is a pair of mode_id and sensor info, if using C++17, you can use structured binding
-            // auto &&[id_, info] = config;
-            auto id_ = config.first;
-            auto info = config.second;
+        for (uint32_t i = 0; i < configs_size; i++) {
+            const auto& id_ = config_ids[i];
+            const auto& info = configs[i];
             std::cout << id_ << ": " << info.width << "x" << info.height << "\n";
         }
     } else {

@@ -110,17 +110,14 @@ int main(int argc, char **argv) {
 
     ArducamDeviceHandle device = device_list->devices[deviceID];
     ArducamCameraHandle handle;
-    ArducamCameraOpenParam param = {
-        .config_file_name = config_file_name,
-        .bin_config = bin_config,
-        .mem_type = DMA,
-        .device = device
-    };
-    
-    // ArducamDefaultParam(&param);
+    ArducamCameraOpenParam param;
+    ArducamDefaultParam(&param);
 
     param.config_file_name = config_file_name;
     param.bin_config = bin_config;
+    param.mem_type = DMA;
+    param.device = device;
+
     ret = ArducamOpenCamera(&handle, &param);
     if (ret) {
         printf("Failed to open camera. ret = %x\n", ret);
@@ -160,7 +157,7 @@ int main(int argc, char **argv) {
     ArducamStartCamera(handle);
     uint32_t mode_id = 1;
     {
-        std::unique_lock lk(mtx);
+        std::unique_lock<std::mutex> lk(mtx);
         while (!exit_flag) {
             if (key == 'q') {
                 exit_flag = true;

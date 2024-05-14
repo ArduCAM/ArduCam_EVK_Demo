@@ -6,7 +6,7 @@
 void log_file() {
     Arducam::Camera camera;
     Arducam::Param param;
-    std::string log_file = "log.txt";
+    const char *log_file = "log.txt";
     if (!camera.open(param)) {  // open camera, return True if success, otherwise return False
         // get the last error message
         std::cout << "open camera error! " << camera.lastErrorMessage() << "\n";

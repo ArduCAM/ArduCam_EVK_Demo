@@ -3,7 +3,6 @@
 #include <condition_variable>
 #include <iostream>
 #include <string>
-#include <string_view>
 
 #include "utils.h"
 
@@ -22,8 +21,8 @@ void preview(Arducam::Camera& camera, ArducamImageFrame image) {
     show_image(image, "Test");
 }
 
-void error_process(Arducam::Camera& camera, ArducamLoggerLevel type, std::string_view error) {
-    printf("[Error] %s\n", error.data());
+void error_process(Arducam::Camera& camera, ArducamLoggerLevel type, const char* message, int size) {
+    printf("[Error] %.*s\n", size, message);
 }
 
 void PrintDeviceInfo(Arducam::Camera& camera, ArducamDeviceHandle device) {
@@ -63,7 +62,7 @@ void dumpDeviceInfo(Arducam::Camera& camera) noexcept {
 int main(int argc, char** argv) {
     using namespace std::literals;
 
-    std::string_view config;
+    std::string config;
     bool bin_config = false;
     uint32_t deviceID = 0;
 
@@ -110,13 +109,13 @@ int main(int argc, char** argv) {
     camera.enableConsoleLog();
     // camera.setLogLevel(info);
     camera.setCaptureCallback(std::bind(preview, std::ref(camera), std::placeholders::_1));
-    camera.setMessageCallback(std::bind(error_process, std::ref(camera), std::placeholders::_1, std::placeholders::_2));
+    camera.setMessageCallback(std::bind(error_process, std::ref(camera), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
     camera.start();
 
     // camera.setControl("setExposureTime", 10000);
 
     {
-        std::unique_lock lk(mtx);
+        std::unique_lock<std::mutex> lk(mtx);
         while (!exit_flag) {
             if (key == 'q') {
                 exit_flag = true;
