@@ -2,7 +2,7 @@ import argparse
 import threading
 import time
 
-from ArducamEvkSDK import *
+from ArducamEvkSDK import Camera, Param, get_error_name
 
 
 def callback(image):

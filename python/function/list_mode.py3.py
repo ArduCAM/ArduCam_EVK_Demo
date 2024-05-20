@@ -1,7 +1,7 @@
 import argparse
 from typing import Generator, Tuple, Any
 
-from ArducamEvkSDK import *
+from ArducamEvkSDK import Camera, Param, get_error_name
 
 from sensor_mode import SensorInfo
 
@@ -53,8 +53,9 @@ if __name__ == '__main__':
     )
     parse.add_argument(
         "-i", "--id",
-        help="Sensor Mode index.",
+        help="Sensor Mode ID.",
         type=int,
+        default=1,
     )
     parse.add_argument(
         "-l", "--list",

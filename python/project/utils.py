@@ -31,7 +31,7 @@ def RGB565ToMat(data, Width, Height):
     arr = ((arr & 0xFF00) >> 8) + ((arr & 0x00FF) << 8)
     arr = 0xFF000000 + ((arr & 0xF800) << 8) + ((arr & 0x07E0) << 5) + ((arr & 0x001F) << 3)
 
-    arr.dtype = np.uint8
+    arr = np.frombuffer(arr, np.uint8)
     image = arr.reshape(Height, Width, 4)
     return cv2.flip(image, 0)
 
@@ -110,6 +110,8 @@ def convert_image(data, cfg):
 
 def from_image(image):
     color_frame = convert_image(image.data, image.format)
+    if color_frame is None:
+        return None
 
     # if color_frame width > 720, resize it to 720
     if color_frame.shape[1] > 720:
@@ -121,7 +123,9 @@ def from_image(image):
 
 
 def show_image(image):
-    cv2.imshow("Test", from_image(image))
+    img = from_image(image)
+    if img is not None:
+        cv2.imshow("Test", img)
     cv2.setWindowTitle("Test", "Test " + str(image.seq))
 
 

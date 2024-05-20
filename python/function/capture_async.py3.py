@@ -1,7 +1,7 @@
 import argparse
 import asyncio
 
-from ArducamEvkSDK import *
+from ArducamEvkSDK import Camera, Param, get_error_name, Frame
 
 
 def callback(image: Frame):

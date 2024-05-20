@@ -1,7 +1,7 @@
 import argparse
 from typing import Optional, cast
 
-from ArducamEvkSDK import *
+from ArducamEvkSDK import Camera, Param, get_error_name, Frame
 
 
 def main(config_path, num):

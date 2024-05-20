@@ -1,8 +1,9 @@
-from ArducamEvkSDK import list_devices
+from ArducamEvkSDK import DeviceList
 
 
 def main():
-    devs = list_devices()
+    dev_lst = DeviceList()
+    devs = dev_lst.devices()
     print("Total {} devices.".format(len(devs)))
     for index, dev in enumerate(devs, 1):
         print("{}: {}".format(index, dev))
