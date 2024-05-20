@@ -1,4 +1,4 @@
-from ArducamEvkSDK import *
+from ArducamEvkSDK import Camera, Param, get_error_name, LoggerLevel, CameraConfig
 
 
 def log_callback(level, msg):
@@ -12,12 +12,16 @@ def log_callback(level, msg):
 def main():
     camera = Camera()
     param = Param()
-    if not camera.open(param):  # open camera, return True if success, otherwise return False
-        raise Exception("open camera error! {}".format(get_error_name(camera.last_error)))  # get the last error message
+    # open camera, return True if success, otherwise return False
+    if not camera.open(param):
+        # get the last error message
+        raise Exception(
+            "open camera error! {}".format(get_error_name(camera.last_error))
+        )
     print("Disable Console Log")
+    camera.set_message_callback(log_callback)  # set log callback
     camera.enable_console_log(False)  # disable console log
     camera.log_level = LoggerLevel.Trace  # set log level to info
-    camera.set_message_callback(log_callback)  # set log callback
 
     # set camera config
     camera_config = CameraConfig()
@@ -30,5 +34,5 @@ def main():
     camera.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 include(../CppOption.cmake)
 
+project(Example)
+
 file(GLOB CPP_FILES "${CMAKE_SOURCE_DIR}/*.cpp")
 
 foreach(CPP_FILE ${CPP_FILES})

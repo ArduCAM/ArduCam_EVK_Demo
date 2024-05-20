@@ -1,4 +1,4 @@
-from ArducamEvkSDK import *
+from ArducamEvkSDK import Camera, Param, get_error_name, LoggerLevel, CameraConfig
 
 
 def main():

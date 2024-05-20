@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 include(../COption.cmake)
 
+project(Example)
+
 file(GLOB C_FILES "${CMAKE_SOURCE_DIR}/*.c")
 
 foreach(C_FILE ${C_FILES})
