@@ -10,7 +10,7 @@ static void dump_info(Arducam::Camera& camera) {
     uint32_t version = 0, year = 0, mouth = 0, day = 0;
 
 #define read_8_8(reg, val)                                                                \
-    version = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, 0x00); \
+    val = camera.readReg(Arducam::I2CMode::I2C_MODE_8_8, USB_CPLD_I2C_ADDRESS, reg); \
     if (camera.lastError() != Arducam::Errorcode::Success) {                              \
         std::cerr << "Failed to read " #val "\n";                                         \
         return;                                                                           \

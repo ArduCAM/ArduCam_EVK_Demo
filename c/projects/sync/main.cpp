@@ -119,8 +119,8 @@ int main(int argc, char **argv) {
 
     while (!exit_flag) {
         ArducamImageFrame image;
-        ArducamCaptureImage(handle, &image, 1000);
-        if (image.data == nullptr) {
+        ret = ArducamCaptureImage(handle, &image, 1000);
+        if (ret != Success || image.data == nullptr) {
             printf("Error reading frame.\n");
             continue;
         }
