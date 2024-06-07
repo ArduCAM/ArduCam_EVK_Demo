@@ -15,29 +15,39 @@ For detailed API reference and usage instructions,
 please refer to the [Arducam online documentation](https://www.arducam.com/docs/arducam-evk/).
 
 ## Installation dependence
+### Linux
+please refer to the [Linux installation](doc/linux_environmental_install.md)
 
-1. opencv
-2. arducam-evk-sdk-dev
-3. arducam-config-parser-dev
+### Windows
+please refer to the [Windows installation](doc/windows_environmental_install.md)
 
+## What's next
+The project contains multiple demos, please try them according to the corresponding descriptions.
 ```
-sudo apt install libopencv-dev
-
-curl -s --compressed "https://arducam.github.io/arducam_ppa/KEY.gpg" | sudo apt-key add -
-sudo curl -s --compressed -o /etc/apt/sources.list.d/arducam_list_files.list "https://arducam.github.io/arducam_ppa/arducam_list_files.list"
-sudo apt update
-sudo apt install arducam-config-parser-dev arducam-evk-sdk-dev
-```
-
-### set udev rules
-
-[Download script](https://github.com/ArduCAM/ArduCAM_USB_Camera_Shield/releases/download/install_drivers/configure_udev_rules.sh)
-
-![udev](img/udev.png)
-
-execute script
-
-```
-sudo chmod +x configure_udev_rules.sh
-./configure_udev_rules.sh
+    .
+    ├── c                           # C Demo
+    │   ├── COption.cmake           # C Demo CMake compilation parameter settings and import
+    │   ├── functions               # C Demo source code (independent use cases for each function)
+    │   └── projects                # C Demo project (integration use cases of common functions)
+    │       ├── FindOpenCV.cmake    # CMake looking for OpenCV library
+    │       ├── simple              # Simple synchronous capture demo
+    │       ├── simple-async        # Simple asynchronous capture demo
+    │       ├── sync                # Synchronous capture demo
+    │       └── async               # Asynchronous capture demo
+    ├── c++                         # C++ Demo
+    │   ├── CppOption.cmake         # C++ Demo CMake compile parameter settings and import arducam_evk_cpp_sdk
+    │   ├── functions               # C++ Demo source code (independent use cases for each function)
+    │   └── projects                # C++ Demo project (integration use cases of common functions)
+    │       ├── FindOpenCV.cmake    # CMake looking for OpenCV library
+    │       ├── sync                # Synchronous capture demo
+    │       └── async               # Asynchronous capture demo
+    ├── python                      # Python Demo
+    │   ├── requirements.txt        # python demo dependent libraries
+    │   ├── README.md               # python demo introduction and usage
+    │   ├── function                # python demo source code (independent use cases for each function)
+    │   └── project                 # python demo project (integrated use cases for common functions)
+    │       ├── utils.py            # Project tool function
+    │       ├── sync.py             # Synchronous capture demo
+    │       └── async.py            # Asynchronous capture demo
+    └── README.md                   
 ```

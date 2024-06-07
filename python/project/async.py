@@ -3,7 +3,7 @@ import argparse
 import cv2
 from ArducamEvkSDK import Camera, Param
 
-from utils import show_image, WaitGroup
+from .utils import show_image, WaitGroup
 
 
 def main(config):

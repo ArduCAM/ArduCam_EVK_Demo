@@ -2,10 +2,19 @@
 
 ## Build
 
+### Linux
+
 ```
-cd c/functions
 mkdir -p build && cd build && cmake ..
 make -j
+```
+
+### Windows
+
+```
+cmake -Bbuild .
+cd build
+cmake --build . --config Release
 ```
 
 ## Run
