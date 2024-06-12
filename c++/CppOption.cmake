@@ -9,9 +9,11 @@ if (NOT DEFINED CPP_CMAKE_OPTION)
 
     if(CMAKE_COMPILER_IS_GNUCXX)
         set(CMAKE_CXX_STANDARD 17)
+        set(CMAKE_C_STANDARD 17)
         message(STATUS "optional: C++17")
     else(CMAKE_COMPILER_IS_GNUCXX)
         set(CMAKE_CXX_STANDARD 20)
+        set(CMAKE_C_STANDARD 17)
         message(STATUS "optional: C++20")
     endif(CMAKE_COMPILER_IS_GNUCXX)
 
