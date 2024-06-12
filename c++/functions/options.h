@@ -1,6 +1,7 @@
 #include "argtable3/argtable3.h"
 #include "string.h"
 
+#define ARGPARSE_IDENTITY(...)          __VA_ARGS__
 #define ARGPARSE_CONCAT_I(a, b)         a##b
 #define ARGPARSE_CONCAT(a, b)           ARGPARSE_CONCAT_I(a, b)
 #define ARGPARSE_REMOVE_PARENS(tuple)   tuple
@@ -39,8 +40,8 @@
 #define ARGPARSE_FOREACH_19(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15,e16,e17,e18) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12) macro(e13) macro(e14) macro(e15) macro(e16) macro(e17) macro(e18)
 #define ARGPARSE_FOREACH_20(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15,e16,e17,e18,e19) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12) macro(e13) macro(e14) macro(e15) macro(e16) macro(e17) macro(e18) macro(e19)
 #if defined(_MSC_VER)
-#define ARGPARSE_FOREACH_N(macro, n, ...)  ARGPARSE_CONCAT(ARGPARSE_CONCAT(ARGPARSE_FOREACH_, n)(macro, __VA_ARGS__),)
-#define ARGPARSE_FOREACH(macro, ...)  ARGPARSE_CONCAT(ARGPARSE_FOREACH_N(macro, ARGPARSE_SIZE(__VA_ARGS__), __VA_ARGS__),)
+#define ARGPARSE_FOREACH_N(macro, n, ...)  ARGPARSE_IDENTITY(ARGPARSE_CONCAT(ARGPARSE_FOREACH_, n)(macro, __VA_ARGS__))
+#define ARGPARSE_FOREACH(macro, ...)  ARGPARSE_IDENTITY(ARGPARSE_FOREACH_N(macro, ARGPARSE_SIZE(__VA_ARGS__), __VA_ARGS__))
 #else
 #define ARGPARSE_FOREACH_N(macro, n, ...)  ARGPARSE_CONCAT(ARGPARSE_FOREACH_, n)(macro, __VA_ARGS__)
 #define ARGPARSE_FOREACH(macro, ...)  ARGPARSE_FOREACH_N(macro, ARGPARSE_SIZE(__VA_ARGS__), __VA_ARGS__)
@@ -48,18 +49,18 @@
 // clang-format on
 /* #endregion */
 
-#define ARGPARSE_ARGUMENT_I_lit(short, long, help)   struct arg_lit* long = arg_litn(#short, #long, 0, 1, help)
-#define ARGPARSE_ARGUMENT_I_int(short, long, help)   struct arg_int* long = arg_intn(#short, #long, NULL, 0, 1, help)
-#define ARGPARSE_ARGUMENT_I_dbl(short, long, help)   struct arg_dbl* long = arg_dbln(#short, #long, NULL, 0, 1, help)
-#define ARGPARSE_ARGUMENT_I_str(short, long, help)   struct arg_str* long = arg_strn(#short, #long, NULL, 0, 1, help)
-#define ARGPARSE_ARGUMENT_I_file(short, long, help)  struct arg_file* long = arg_filen(#short, #long, NULL, 0, 1, help)
+#define ARGPARSE_ARGUMENT_I_lit(short, long, help)  struct arg_lit* long = arg_litn(#short, #long, 0, 1, help)
+#define ARGPARSE_ARGUMENT_I_int(short, long, help)  struct arg_int* long = arg_intn(#short, #long, NULL, 0, 1, help)
+#define ARGPARSE_ARGUMENT_I_dbl(short, long, help)  struct arg_dbl* long = arg_dbln(#short, #long, NULL, 0, 1, help)
+#define ARGPARSE_ARGUMENT_I_str(short, long, help)  struct arg_str* long = arg_strn(#short, #long, NULL, 0, 1, help)
+#define ARGPARSE_ARGUMENT_I_file(short, long, help) struct arg_file* long = arg_filen(#short, #long, NULL, 0, 1, help)
 
 #define ARGPARSE_ARGUMENT_I(type, short, long, help) ARGPARSE_CONCAT(ARGPARSE_ARGUMENT_I_, type)(short, long, help)
 
 #define ARGPARSE_DEFINE_ARG_II(type, short, long, help) long
 
 #define ARGPARSE_DEFINE_LINE_I(tuple) ARGPARSE_ARGUMENT_I tuple;
-#define ARGPARSE_DEFINE_ARG_I(tuple) ARGPARSE_DEFINE_ARG_II tuple,
+#define ARGPARSE_DEFINE_ARG_I(tuple)  ARGPARSE_DEFINE_ARG_II tuple,
 
 #define ARGPARSE_PARSE_SIZE(parse) (sizeof(parse) / sizeof(parse[0]))
 #define ARGPARSE_ARG_END(parse)    ((struct arg_end*)parse[ARGPARSE_PARSE_SIZE(parse) - 1])
@@ -76,6 +77,8 @@
  *   - short: The short name of the argument. WITHOUT quotation marks.
  *   - long: The long name or description of the argument. WITHOUT quotation marks.
  *   - help: Additional help or information about the argument.
+ *
+ * @note the length of arguments must be less than to 20.
  *
  * @example
  * ``` c
