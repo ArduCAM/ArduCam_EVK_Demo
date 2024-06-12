@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 
-include(../COption.cmake)
+project(Example
+  LANGUAGES C CXX
+)
 
-project(Example)
+include(../COption.cmake)
 
 file(GLOB C_FILES "${CMAKE_SOURCE_DIR}/*.c")
 

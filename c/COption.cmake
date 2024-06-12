@@ -57,9 +57,5 @@ if (NOT DEFINED C_CMAKE_OPTION)
         endif(WIN32)
     endif()
 
-    include_directories(
-        ${arducam_evk_sdk_INCLUDE_DIR}
-    )
-
-    set(CORE_LIBS ${arducam_evk_sdk_LIBS})
+    set(CORE_LIBS arducam_evk_sdk)
 endif()

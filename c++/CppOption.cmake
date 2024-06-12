@@ -57,9 +57,5 @@ if (NOT DEFINED CPP_CMAKE_OPTION)
         endif(WIN32)
     endif()
 
-    include_directories(
-        ${arducam_evk_cpp_sdk_INCLUDE_DIR}
-    )
-
-    set(CORE_LIBS ${arducam_evk_cpp_sdk_LIBS})
+    set(CORE_LIBS arducam_evk_cpp_sdk)
 endif()
