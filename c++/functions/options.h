@@ -9,61 +9,42 @@
 /* #region size */
 // clang-format off
 #define ARGPARSE_SIZE_I(_0,_1,_2,_3,_4,_5,_6,_7,_8,_9,_10,_11,_12,_13,_14,_15,_16,_17,_18,_19,N,...) N
+#if defined(_MSC_VER)
+#define ARGPARSE_SIZE(...) ARGPARSE_CONCAT(ARGPARSE_SIZE_I(__VA_ARGS__, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0),)
+#else
 #define ARGPARSE_SIZE(...) ARGPARSE_SIZE_I(__VA_ARGS__, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0)
-// clang-format on
-/* #endregion */
-/* #region at */
-// clang-format off
-#define ARGPARSE_FIRST(a, ...)  a
-#define ARGPARSE_REST(a, ...)   __VA_ARGS__
-#define ARGPARSE_AT_0(a, ...)   a
-#define ARGPARSE_AT_1(a, ...)   ARGPARSE_AT_0(__VA_ARGS__)
-#define ARGPARSE_AT_2(a, ...)   ARGPARSE_AT_1(__VA_ARGS__)
-#define ARGPARSE_AT_3(a, ...)   ARGPARSE_AT_2(__VA_ARGS__)
-#define ARGPARSE_AT_4(a, ...)   ARGPARSE_AT_3(__VA_ARGS__)
-#define ARGPARSE_AT_5(a, ...)   ARGPARSE_AT_4(__VA_ARGS__)
-#define ARGPARSE_AT_6(a, ...)   ARGPARSE_AT_5(__VA_ARGS__)
-#define ARGPARSE_AT_7(a, ...)   ARGPARSE_AT_6(__VA_ARGS__)
-#define ARGPARSE_AT_8(a, ...)   ARGPARSE_AT_7(__VA_ARGS__)
-#define ARGPARSE_AT_9(a, ...)   ARGPARSE_AT_8(__VA_ARGS__)
-#define ARGPARSE_AT_10(a, ...)  ARGPARSE_AT_9(__VA_ARGS__)
-#define ARGPARSE_AT_11(a, ...)  ARGPARSE_AT_10(__VA_ARGS__)
-#define ARGPARSE_AT_12(a, ...)  ARGPARSE_AT_11(__VA_ARGS__)
-#define ARGPARSE_AT_13(a, ...)  ARGPARSE_AT_12(__VA_ARGS__)
-#define ARGPARSE_AT_14(a, ...)  ARGPARSE_AT_13(__VA_ARGS__)
-#define ARGPARSE_AT_15(a, ...)  ARGPARSE_AT_14(__VA_ARGS__)
-#define ARGPARSE_AT_16(a, ...)  ARGPARSE_AT_15(__VA_ARGS__)
-#define ARGPARSE_AT_17(a, ...)  ARGPARSE_AT_16(__VA_ARGS__)
-#define ARGPARSE_AT_18(a, ...)  ARGPARSE_AT_17(__VA_ARGS__)
-#define ARGPARSE_AT_19(a, ...)  ARGPARSE_AT_18(__VA_ARGS__)
-#define ARGPARSE_AT_N(n, tuple) ARGPARSE_CONCAT(ARGPARSE_AT_, n) tuple
-#define ARGPARSE_AT(n, tuple)   ARGPARSE_AT_N(n, tuple)
+#endif
 // clang-format on
 /* #endregion */
 /* #region foreach */
 // clang-format off
-#define ARGPARSE_FOREACH_1(macro, a)       macro(a)
-#define ARGPARSE_FOREACH_2(macro, a, ...)  macro(a) ARGPARSE_FOREACH_1(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_3(macro, a, ...)  macro(a) ARGPARSE_FOREACH_2(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_4(macro, a, ...)  macro(a) ARGPARSE_FOREACH_3(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_5(macro, a, ...)  macro(a) ARGPARSE_FOREACH_4(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_6(macro, a, ...)  macro(a) ARGPARSE_FOREACH_5(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_7(macro, a, ...)  macro(a) ARGPARSE_FOREACH_6(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_8(macro, a, ...)  macro(a) ARGPARSE_FOREACH_7(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_9(macro, a, ...)  macro(a) ARGPARSE_FOREACH_8(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_10(macro, a, ...) macro(a) ARGPARSE_FOREACH_9(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_11(macro, a, ...) macro(a) ARGPARSE_FOREACH_10(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_12(macro, a, ...) macro(a) ARGPARSE_FOREACH_11(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_13(macro, a, ...) macro(a) ARGPARSE_FOREACH_12(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_14(macro, a, ...) macro(a) ARGPARSE_FOREACH_13(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_15(macro, a, ...) macro(a) ARGPARSE_FOREACH_14(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_16(macro, a, ...) macro(a) ARGPARSE_FOREACH_15(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_17(macro, a, ...) macro(a) ARGPARSE_FOREACH_16(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_18(macro, a, ...) macro(a) ARGPARSE_FOREACH_17(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_19(macro, a, ...) macro(a) ARGPARSE_FOREACH_18(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH_20(macro, a, ...) macro(a) ARGPARSE_FOREACH_19(macro, __VA_ARGS__)
+#define ARGPARSE_FOREACH_1(macro,e0) macro(e0)
+#define ARGPARSE_FOREACH_2(macro,e0,e1) macro(e0) macro(e1)
+#define ARGPARSE_FOREACH_3(macro,e0,e1,e2) macro(e0) macro(e1) macro(e2)
+#define ARGPARSE_FOREACH_4(macro,e0,e1,e2,e3) macro(e0) macro(e1) macro(e2) macro(e3)
+#define ARGPARSE_FOREACH_5(macro,e0,e1,e2,e3,e4) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4)
+#define ARGPARSE_FOREACH_6(macro,e0,e1,e2,e3,e4,e5) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5)
+#define ARGPARSE_FOREACH_7(macro,e0,e1,e2,e3,e4,e5,e6) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6)
+#define ARGPARSE_FOREACH_8(macro,e0,e1,e2,e3,e4,e5,e6,e7) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7)
+#define ARGPARSE_FOREACH_9(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8)
+#define ARGPARSE_FOREACH_10(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9)
+#define ARGPARSE_FOREACH_11(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10)
+#define ARGPARSE_FOREACH_12(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11)
+#define ARGPARSE_FOREACH_13(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12)
+#define ARGPARSE_FOREACH_14(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12) macro(e13)
+#define ARGPARSE_FOREACH_15(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12) macro(e13) macro(e14)
+#define ARGPARSE_FOREACH_16(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12) macro(e13) macro(e14) macro(e15)
+#define ARGPARSE_FOREACH_17(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15,e16) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12) macro(e13) macro(e14) macro(e15) macro(e16)
+#define ARGPARSE_FOREACH_18(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15,e16,e17) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12) macro(e13) macro(e14) macro(e15) macro(e16) macro(e17)
+#define ARGPARSE_FOREACH_19(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15,e16,e17,e18) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12) macro(e13) macro(e14) macro(e15) macro(e16) macro(e17) macro(e18)
+#define ARGPARSE_FOREACH_20(macro,e0,e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15,e16,e17,e18,e19) macro(e0) macro(e1) macro(e2) macro(e3) macro(e4) macro(e5) macro(e6) macro(e7) macro(e8) macro(e9) macro(e10) macro(e11) macro(e12) macro(e13) macro(e14) macro(e15) macro(e16) macro(e17) macro(e18) macro(e19)
+#if defined(_MSC_VER)
+#define ARGPARSE_FOREACH_N(macro, n, ...)  ARGPARSE_CONCAT(ARGPARSE_CONCAT(ARGPARSE_FOREACH_, n)(macro, __VA_ARGS__),)
+#define ARGPARSE_FOREACH(macro, ...)  ARGPARSE_CONCAT(ARGPARSE_FOREACH_N(macro, ARGPARSE_SIZE(__VA_ARGS__), __VA_ARGS__),)
+#else
 #define ARGPARSE_FOREACH_N(macro, n, ...)  ARGPARSE_CONCAT(ARGPARSE_FOREACH_, n)(macro, __VA_ARGS__)
-#define ARGPARSE_FOREACH(macro, ...)       ARGPARSE_FOREACH_N(macro, ARGPARSE_SIZE(__VA_ARGS__), __VA_ARGS__)
+#define ARGPARSE_FOREACH(macro, ...)  ARGPARSE_FOREACH_N(macro, ARGPARSE_SIZE(__VA_ARGS__), __VA_ARGS__)
+#endif
 // clang-format on
 /* #endregion */
 
@@ -72,10 +53,13 @@
 #define ARGPARSE_ARGUMENT_I_dbl(short, long, help)   struct arg_dbl* long = arg_dbln(#short, #long, NULL, 0, 1, help)
 #define ARGPARSE_ARGUMENT_I_str(short, long, help)   struct arg_str* long = arg_strn(#short, #long, NULL, 0, 1, help)
 #define ARGPARSE_ARGUMENT_I_file(short, long, help)  struct arg_file* long = arg_filen(#short, #long, NULL, 0, 1, help)
+
 #define ARGPARSE_ARGUMENT_I(type, short, long, help) ARGPARSE_CONCAT(ARGPARSE_ARGUMENT_I_, type)(short, long, help)
 
+#define ARGPARSE_DEFINE_ARG_II(type, short, long, help) long
+
 #define ARGPARSE_DEFINE_LINE_I(tuple) ARGPARSE_ARGUMENT_I tuple;
-#define ARGPARSE_DEFINE_ARG_I(tuple)  ARGPARSE_AT(2, tuple),
+#define ARGPARSE_DEFINE_ARG_I(tuple) ARGPARSE_DEFINE_ARG_II tuple,
 
 #define ARGPARSE_PARSE_SIZE(parse) (sizeof(parse) / sizeof(parse[0]))
 #define ARGPARSE_ARG_END(parse)    ((struct arg_end*)parse[ARGPARSE_PARSE_SIZE(parse) - 1])

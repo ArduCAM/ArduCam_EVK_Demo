@@ -7,6 +7,9 @@ __pycache__/
 
 /build.sh
 /run.sh
+/run.py.sh
+/run.func.c.sh
+/run.func.cpp.sh
 
 # cmake
 *.vcxproj

@@ -3,7 +3,7 @@ set(APP_NAME demo_cpp_async)
 cmake_minimum_required(VERSION 3.0)
 
 project(${APP_NAME} 
-    LANGUAGES C CXX
+  LANGUAGES C CXX
 )
 
 include(../../CppOption.cmake)
