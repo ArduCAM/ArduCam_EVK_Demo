@@ -2,9 +2,25 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __linux__
 #include <unistd.h>
+#endif
+#ifdef _WIN32
+#include <windows.h>
+#undef min
+#undef max
+#endif
 
 #include "options.h"
+
+static void delay_ms(int mills) {
+#ifdef __linux__
+    usleep(mills * 1000);
+#endif
+#ifdef _WIN32
+    Sleep(mills);
+#endif
+}
 
 void show_fps(const char* config_path, bool bin_config) {
     ArducamCameraHandle camera;
@@ -25,7 +41,7 @@ void show_fps(const char* config_path, bool bin_config) {
     ArducamStartCamera(camera);
 
     // wait 2 seconds
-    sleep(2);
+    delay_ms(2000);
 
     // show fps and bandwidth
     printf("fps: %d, bandwidth: %d B/s (%.2f MB/s)\n",  //
