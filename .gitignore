@@ -1,5 +1,6 @@
 .idea/
 .vscode/
+.vs/
 obj/
 build/
 obj-x86_64-linux-gnu/
