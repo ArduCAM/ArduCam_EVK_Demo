@@ -2,18 +2,34 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __linux__
 #include <unistd.h>
+#endif
+#ifdef _WIN32
+#include <windows.h>
+#undef min
+#undef max
+#endif
 
 static inline void callback(ArducamEventCode, ArducamDeviceHandle, void*);
 static inline void show_list(ArducamDeviceListHandle devs);
 static inline const char* to_name(char arr[15], const uint8_t serial_number[16]);
+
+static void delay_ms(int mills) {
+#ifdef __linux__
+    usleep(mills * 1000);
+#endif
+#ifdef _WIN32
+    Sleep(mills);
+#endif
+}
 
 int main(int argc, char** argv) {
     ArducamDeviceListHandle devs;
     ArducamListDevice(&devs);
     show_list(devs);
     ArducamDeviceListRegisterEventCallback(devs, callback, devs);
-    usleep(60 * 1000 * 1000);
+    delay_ms(60 * 1000);
     ArducamFreeDeviceList();
     return 0;
 }
@@ -30,7 +46,7 @@ static inline void callback(ArducamEventCode event, ArducamDeviceHandle device, 
     }
     // must add a delay before calling ArducamRefreshDeviceList
     // if not, will show the serial number as "????-????-????"
-    usleep(10 * 1000);
+    delay_ms(10);
     ArducamRefreshDeviceList(devs);
     show_list(devs);
 }

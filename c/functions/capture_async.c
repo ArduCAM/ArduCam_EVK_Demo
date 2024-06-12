@@ -2,9 +2,25 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __linux__
 #include <unistd.h>
+#endif
+#ifdef _WIN32
+#include <windows.h>
+#undef min
+#undef max
+#endif
 
 #include "options.h"
+
+static void delay_ms(int mills) {
+#ifdef __linux__
+    usleep(mills * 1000);
+#endif
+#ifdef _WIN32
+    Sleep(mills);
+#endif
+}
 
 static void callback(ArducamImageFrame image, void* user_data) {
     printf("get frame(%dx%d) from camera.\n", image.format.width, image.format.height);
@@ -30,8 +46,7 @@ void capture_async(const char* config_path, bool bin_config, double delay) {
 
     ArducamStartCamera(camera);
     // use sleep_for to wait for `delay` seconds
-    sleep((int)delay);
-    usleep((int)((delay - (int)delay) * 1000000));
+    delay_ms((int)(delay * 1000));
 
     ArducamStopCamera(camera);
     ArducamCloseCamera(camera);

@@ -4,9 +4,25 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __linux__
 #include <unistd.h>
+#endif
+#ifdef _WIN32
+#include <windows.h>
+#undef min
+#undef max
+#endif
 
 #include "options.h"
+
+static void delay_ms(int mills) {
+#ifdef __linux__
+    usleep(mills * 1000);
+#endif
+#ifdef _WIN32
+    Sleep(mills);
+#endif
+}
 
 static const char* to_name(char arr[15], const uint8_t serial_number[16]) {
     // xxxx-xxxx-xxxx
@@ -42,7 +58,7 @@ void device_hotplug(double delay) {
     ArducamDeviceListHandle devs;
     ArducamListDevice(&devs);
     ArducamDeviceListRegisterEventCallback(devs, callback, NULL);
-    usleep(delay * 1000 * 1000);
+    delay_ms(delay * 1000);
     ArducamFreeDeviceList();
 }
 
