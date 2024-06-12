@@ -3,12 +3,22 @@ import threading
 import ArducamEvkSDK
 import cv2
 import numpy as np
+import arducam_rgbir_remosaic
 
 COLOR_BayerBG2BGR = 46
 COLOR_BayerGB2BGR = 47
 COLOR_BayerRG2BGR = 48
 COLOR_BayerGR2BGR = 49
 
+rgbir_format = [
+    arducam_rgbir_remosaic.BGGI,
+    arducam_rgbir_remosaic.GIRG,
+    arducam_rgbir_remosaic.RGGI,
+    arducam_rgbir_remosaic.GRIG,
+    arducam_rgbir_remosaic.IGGB,
+    arducam_rgbir_remosaic.GBIG,
+    arducam_rgbir_remosaic.GIBG,
+]
 
 def JPGToMat(data, datasize):
     image = np.frombuffer(data, np.uint8, count=datasize)
@@ -70,6 +80,13 @@ def convert_color(image, color_mode):
         image = cv2.cvtColor(image, COLOR_BayerGB2BGR)
     return image
 
+def RGBIRToMat(data, color_mode):
+    bayer, ir = arducam_rgbir_remosaic.rgbir_remosaic(data, rgbir_format[color_mode])
+    color = cv2.cvtColor(bayer, cv2.COLOR_BayerRG2BGRA)
+    ir_color = cv2.cvtColor(ir, cv2.COLOR_GRAY2BGRA)
+    ir_resize = cv2.resize(ir_color, (bayer.shape[1], bayer.shape[0]))
+    image = cv2.hconcat([color, ir_resize])
+    return image
 
 def convert_image(data, cfg):
     Width = cfg.width
@@ -105,6 +122,14 @@ def convert_image(data, cfg):
     if emImageFmtMode == ArducamEvkSDK.MON_D:
         image = separationImage(data, Width, Height)
         pass
+    if emImageFmtMode == ArducamEvkSDK.RGB_IR:
+        if bitWidth > 8:
+            data = np.frombuffer(data, np.uint16).reshape(Height, Width)
+            data = (data >> (bitWidth - 8)).astype(np.uint8)
+        else:
+            data = np.frombuffer(data, np.uint8).reshape(Height, Width)
+        image = RGBIRToMat(data, color_mode)
+        
     return image
 
 
