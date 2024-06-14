@@ -25,6 +25,17 @@ Please operate according to the corresponding package on the official website
 Install `Build Tools for Visual Studio` or `Visual Studio`  
 <https://visualstudio.microsoft.com/downloads/>
 
+#### Note
+
+When generating a CMake project for Visual Studio, you need to specify the appropriate generator for the version of Visual Studio you are using. The generators to use are:
+
+- For Visual Studio 2017: `cmake -G "Visual Studio 15 2017 Win64" ...`
+- For Visual Studio 2015: `cmake -G "Visual Studio 14 2015 Win64" ...` 
+- For Visual Studio 2013: `cmake -G "Visual Studio 12 2013 Win64" ...`
+
+Be sure to use the correct generator for the version of Visual Studio installed on your system. Using the wrong generator may result in errors or an incompatible project being generated.  
+You may not need to specify the version number for newer Visual Studio releases(2019 and later).
+
 ### Install evk sdk
 
 Download win_evk_sdk.zip
@@ -45,6 +56,15 @@ After downloading, please unzip it to the desktop. If you unzip it in another di
 ![env-9](../img/arducam_evk_cpp_sdk_DIR.png)  
 
 ### Install Opencv
+
+#### Note
+
+When using OpenCV with Visual Studio, the compatible version of OpenCV depends on the version of Visual Studio:
+
+- If you are using Visual Studio 2017 or Visual Studio 2015, you should download the latest version of OpenCV 4.6.0.
+- If you are using Visual Studio 2019 or a later version, you can download the latest version of OpenCV.
+
+Make sure to use an OpenCV version that is compatible with your Visual Studio installation to avoid any issues.
 
 1. download and install ([opencv Releases](https://opencv.org/releases/))
 
