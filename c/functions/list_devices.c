@@ -28,7 +28,8 @@ void list_devices() {
     printf("Total %d devices.\n", devs->size);
     for (int index = 0; index < devs->size; index++) {
         ArducamDeviceHandle d = devs->devices[index];
-        printf("%d: [%04x:%04x] %s\n", index + 1, d->id_vendor, d->id_product, to_name((char[16]){}, d->serial_number));
+        char tmp[16] = {};
+        printf("%d: [%04x:%04x] %s\n", index + 1, d->id_vendor, d->id_product, to_name(tmp, d->serial_number));
     }
     ArducamFreeDeviceList();
 }

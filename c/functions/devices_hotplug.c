@@ -49,7 +49,8 @@ static void callback(ArducamEventCode event, ArducamDeviceHandle device, void* u
         break;
     case DeviceDisconnect:
         assert(device != NULL);
-        printf("Device[%p][%s] disconnected\n", device, to_name((char[16]){}, device->serial_number));
+        char tmp[16] = {};
+        printf("Device[%p][%s] disconnected\n", device, to_name(tmp, device->serial_number));
         break;
     }
 }
