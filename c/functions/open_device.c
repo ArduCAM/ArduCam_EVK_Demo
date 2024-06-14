@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
     CHECK_REQUIRED(config, return 1);
 
     GET_CONFIG(config, path, bin);
-    int device_num = GET_OR_DEFAULT(device, 1);
+    int device_num = GET_OR_DEFAULT(int, device, 1);
 
     open_device(path, bin, device_num);
 

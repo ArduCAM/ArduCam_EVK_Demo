@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
     const char* info = "Monitor device hotplug events.";
     ARGPARSE_PARSE(parse, argc, argv, info, return 1, return 0);
 
-    double delay_val = GET_OR_DEFAULT(delay, 10.0);
+    double delay_val = GET_OR_DEFAULT(dbl, delay, 10.0);
 
     device_hotplug(delay_val);
 

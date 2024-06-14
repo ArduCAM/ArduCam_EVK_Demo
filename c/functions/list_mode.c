@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
         fprintf(stderr, "List mode only support bin config.\n");
         return -1;
     }
-    list_mode(path, GET_OR_DEFAULT(id, 0), list->count > 0);
+    list_mode(path, GET_OR_DEFAULT(int, id, 0), list->count > 0);
 
     ARGPARSE_FREE(parse);
     return 0;

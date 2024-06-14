@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
     CHECK_REQUIRED(config, return 1);
 
     GET_CONFIG(config, path, bin);
-    double delay_val = GET_OR_DEFAULT(delay, 1.0);
+    double delay_val = GET_OR_DEFAULT(dbl, delay, 1.0);
 
     capture_async(path, bin, delay_val);
 
