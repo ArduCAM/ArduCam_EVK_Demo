@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
     CHECK_REQUIRED(config, return 1);
 
     GET_CONFIG(config, path, bin);
-    int take_val = GET_OR_DEFAULT(take, 1);
+    int take_val = GET_OR_DEFAULT(int, take, 1);
 
     capture(path, bin, take_val);
 

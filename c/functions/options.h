@@ -145,6 +145,7 @@ static inline const char* argparse_get_val_str(struct arg_str* arg) { return *ar
 static inline const char* argparse_get_val_file(struct arg_file* arg) { return *arg->filename; }
 /**
  * Use the _Generic to impl the function overloading.
+ * @note vs 2017 does not support _Generic
  */
 #define GET_OR_DEFAULT_VAR_I(arg)               \
     _Generic((arg),                             \
@@ -153,11 +154,16 @@ static inline const char* argparse_get_val_file(struct arg_file* arg) { return *
         struct arg_str *: argparse_get_val_str, \
         struct arg_file *: argparse_get_val_file)(arg)
 /**
+ * Use the specific function to get the value.
+ */
+#define GET_OR_DEFAULT_VAR_II(type, arg)   ARGPARSE_CONCAT(argparse_get_val_, type)(arg)
+/**
  * @brief Get the value of an argument or a default value if the argument is not provided.
  *
+ * @param type The argument type. Valid types are 'int', 'dbl', 'str', and 'file'.
  * @param arg The argument to get the value from.
  * @param default The default value to return if the argument is not provided.
  */
-#define GET_OR_DEFAULT(arg, default) ((arg)->count > 0) ? GET_OR_DEFAULT_VAR_I(arg) : (default)
+#define GET_OR_DEFAULT(type, arg, default) ((arg)->count > 0) ? GET_OR_DEFAULT_VAR_II(type, arg) : (default)
 
 #endif

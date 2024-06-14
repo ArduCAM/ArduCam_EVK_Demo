@@ -52,9 +52,9 @@ int main(int argc, char** argv) {
     CHECK_REQUIRED(config, return 1);
 
     GET_CONFIG(config, path, bin);
-    int count_val = GET_OR_DEFAULT(count, 30);
-    int size_val = GET_OR_DEFAULT(size, 512 * 1024);
-    int take_val = GET_OR_DEFAULT(take, 1);
+    int count_val = GET_OR_DEFAULT(int, count, 30);
+    int size_val = GET_OR_DEFAULT(int, size, 512 * 1024);
+    int take_val = GET_OR_DEFAULT(int, take, 1);
 
     set_transfer_option(path, bin, count_val, size_val, take_val);
 
