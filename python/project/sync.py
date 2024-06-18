@@ -2,6 +2,7 @@ import argparse
 from typing import Optional, cast
 
 import cv2
+import ArducamEvkSDK
 from ArducamEvkSDK import Camera, Param, LoggerLevel, Frame
 
 from img_cvt_utils import show_image
@@ -12,6 +13,8 @@ def log_callback(level, msg):
 
 
 def main(config):
+    print("ArducamEvkSDK Version: {}".format(ArducamEvkSDK.__version__))
+
     camera = Camera()
     param = Param()
     param.config_file_name = config
@@ -21,10 +24,12 @@ def main(config):
         raise Exception("open camera error! ret={}".format(camera.last_error))
     camera.set_message_callback(log_callback)
     camera.log_level = LoggerLevel.Info
-    print(camera.usb_type)
 
-    # if r != 0:
-    #     raise Exception(f"open camera error! ret={r}")
+    print("SerialNumber: {}".format(''.join(chr(i) for i in camera.device.serial_number)))
+    print("DeviceType: {}".format(camera.usb_type))
+    print("DeviceSpeed: {}".format(camera.device.speed))
+    print("VID:PID: {:04x}:{:04x}".format(camera.device.id_vendor, camera.device.id_product))
+
     camera.init()
     camera.start()
     config = camera.config
