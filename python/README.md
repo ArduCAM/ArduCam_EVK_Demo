@@ -159,30 +159,44 @@ python function/controls.py -c <config>
 
 ## Project
 
-### Run sync mode
+### Run sync demo
 
 Show help
 
 ```shell
-python -m project.sync --help
+python project/sync.py --help
 ```
 
 Run
 
 ```shell
-python -m project.sync -c <path/config-file-name>
+python project/sync.py -c <path/config-file-name>
 ```
 
-### Run async mode
+### Run async demo
 
 Show help
 
 ```shell
-python -m project.async --help
+python project/async.py --help
 ```
 
 Run
 
 ```shell
-python -m project.async -c <path/config-file-name>
+python project/async.py -c <path/config-file-name>
+```
+
+### Run time source demo
+
+Show help
+
+```shell
+python project/time_source.py --help
+```
+
+Run
+
+```shell
+python project/time_source.py -c <path/config-file-name>
 ```
