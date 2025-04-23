@@ -53,7 +53,7 @@ After downloading, please unzip it to the desktop. If you unzip it in another di
 ![env-8](../img/arducam_evk_cpp_sdk_DIR.png)  
 (3). Setting up compiler environment `arducam_evk_sdk_DIR`  
 ![env-3](../img/env_3.png)
-![env-9](../img/arducam_evk_cpp_sdk_DIR.png)  
+![env-9](../img/arducam_evk_sdk_DIR.png)  
 
 ### Install Opencv
 
