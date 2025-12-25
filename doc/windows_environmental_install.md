@@ -1,6 +1,6 @@
-# [Linux Environmental Installation](./linux_environmental_install.md)
+### For Linux, please refer to [Linux Environmental Installation](./linux_environmental_install.md)
 
-## Windows
+# Windows
 
 ### Install Driver
 
@@ -14,6 +14,13 @@ Double-click to execute the install_driver.bat file.
 
 ![driver](../img/install_driver.png)
 
+
+### Quick Start
+To run the demo in the fastest and simplest way, it is recommended to use the [Python demo](../python/README.md#run-sync-demo) (please install the [driver](#install-driver) and [Python dependencies](../python/README.md#installation-dependence) before trying it).
+
+
+**Note: The following environment setup is only for developing C/C++ programs.**
+----------
 ### Install cmake
 
 Please operate according to the corresponding package on the official website

@@ -1,4 +1,4 @@
-## [Windows Environmental Installation](./windows_environmental_install.md)
+### Note: For Windows, please refer to [Windows Environmental Installation](./windows_environmental_install.md)
 # Linux
 
 ## Installation dependence
@@ -28,3 +28,6 @@ execute script
 sudo chmod +x configure_udev_rules.sh
 ./configure_udev_rules.sh
 ```
+
+## Quick Start
+To run the demo in the fastest and simplest way, it is recommended to use the [Python demo](../python/README.md#run-sync-demo) (please install the [driver](#installation-dependence) and [Python dependencies](../python/README.md#installation-dependence) before trying it).

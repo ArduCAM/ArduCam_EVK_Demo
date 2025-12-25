@@ -21,6 +21,9 @@ please refer to the [Linux installation](doc/linux_environmental_install.md)
 ### Windows
 please refer to the [Windows installation](doc/windows_environmental_install.md)
 
+## Quick Start
+To run the demo in the fastest and simplest way, it is recommended to use the [Python demo](./python/README.md#run-sync-demo) (please install the [driver](#installation-dependence) and [Python dependencies](./python/README.md#installation-dependence) before trying it).
+
 ## What's next
 The project contains multiple demos, please try them according to the corresponding descriptions.
 ```
